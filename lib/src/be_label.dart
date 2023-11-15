@@ -237,6 +237,7 @@ class _BeLabelRenderObject extends RenderBox
 class _BeLabelChildParentData extends ContainerBoxParentData<RenderBox>
     with ContainerParentDataMixin<RenderBox> {}
 
+/// Enumeration for different badge positions [BeLabelPosition]
 enum BeLabelPosition {
   topLeft,
   topCenter,
