@@ -20,7 +20,7 @@ know whether this package might be useful for them.
 2.List what your package can do. Maybe include images, gifs, or videos.
 
 ## Screenshot
-  ![Alt text](./screenshots/screen-shot-1.png")
+  ![Alt text](./screenshots/screen-shot-1.png)
 
 ## Getting started
 
