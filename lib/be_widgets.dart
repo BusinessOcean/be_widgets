@@ -1,7 +1,6 @@
 library be_widgets;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/be_badge.dart';
+export 'src/be_label.dart';
+export 'src/be_multi_badge.dart';
+export 'src/be_multi_label.dart';

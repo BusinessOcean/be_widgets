@@ -1,7 +1,13 @@
 name: be_widgets
 description: Flutter package for badgeing and labeling widget along with any widget which reduce you amount of code segnificantly and also performance improvement.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/BusinessOcean/be_widgets
+# https://pub.dev/packages/be_widgets
+
+#  --platforms=android,ios,linux,macos,windows
+repository: https://github.com/BusinessOcean/be_widgets
+screenshots:
+  - ./screenshots/screen-shot-1.png
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
@@ -10,7 +16,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+   
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -21,7 +27,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  # uses-material-design: true
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
