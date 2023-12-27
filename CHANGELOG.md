@@ -1,4 +1,7 @@
 
+## 1.0.1
+* Added Screenshot
+
 ## 1.0.0
 * Updated documentation
 

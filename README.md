@@ -36,6 +36,11 @@ Provides flexibility in positioning and styling individual badges.
 A widget for rendering multiple labels on a single widget.
 Supports customization of label positions, offsets, and styling.
 Usage
+
+
+## Screenshot
+  ![Alt text](./screenshots/screen-shot-1.png)
+
 To use this package in your Flutter project, add it to your pubspec.yaml file:
 
 ```yaml
