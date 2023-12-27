@@ -1,4 +1,7 @@
 
+## 1.0.0
+* Updated documentation
+
 ## 0.0.4
 * Updated documentation
 
