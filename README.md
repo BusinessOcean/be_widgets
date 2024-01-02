@@ -10,7 +10,7 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
-# `be_widget` Flutter Package
+# `be_widgets` Flutter Package
 ## Overview
 The be_widget Flutter package provides a collection of custom Flutter widgets that enhance the user interface and offer additional features for building Flutter applications. These widgets are designed to be flexible, customizable, and easy to integrate into your Flutter projects.
 
