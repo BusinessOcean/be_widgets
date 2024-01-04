@@ -46,7 +46,7 @@ To use this package in your Flutter project, add it to your pubspec.yaml file:
 ```yaml
 
 dependencies:
-  be_widget: ^<latest_version>
+  be_widgets: ^<latest_version>
 ```
 Then, run:
 
@@ -67,7 +67,7 @@ If you encounter any issues or would like to contribute to the be_widget package
 License
 This package is released under the MIT License. See the LICENSE file for details.
 
-### 1.BeLabel
+## BeLabel
 `BeLabel` is a custom Flutter widget that renders a label on another widget. It is designed to be versatile, allowing you to position the label based on different configurations.
 
 Attributes
@@ -98,7 +98,7 @@ innerLabel: A `boolean` indicating whether the label should be positioned inside
 
 ```
 
-### BeBadge Widget
+## BeBadge Widget
 
 `BeBadge` is a custom Flutter widget that renders a badge on another widget. It is designed to be versatile, allowing you to position the badge based on different configurations.
 
@@ -135,7 +135,7 @@ The offset attribute allows you to translate the badge from its default position
 
 Feel free to customize the widget according to your needs.
 
-### BeMultiBadge
+## BeMultiBadge
 
 `BeMultiBadge` Flutter Widget
 BeMultiBadge is a custom Flutter widget designed for rendering multiple badges on another widget. It provides flexibility in positioning badges based on different configurations.
@@ -167,7 +167,7 @@ The rounded attribute can be set to true to give all badges rounded corners.
 Feel free to customize the widget according to your needs.
 
 
-### BeMultiLabel Widget
+## BeMultiLabel Widget
 
 BeMultiLabel is a custom Flutter widget designed for rendering multiple labels on another widget. It provides flexibility in positioning labels based on different configurations.
 
