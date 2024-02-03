@@ -15,7 +15,7 @@ class InputLabel extends StatelessWidget {
         color: Colors.pink,
         padding: const EdgeInsets.all(16),
         child: const Icon(
-          Icons.timelapse,
+          Icons.person_3,
           color: Colors.white,
         ),
       ),
@@ -46,7 +46,7 @@ class InputLabelRight extends StatelessWidget {
           color: Colors.pink,
           padding: const EdgeInsets.all(16),
           child: const Icon(
-            Icons.timelapse,
+            Icons.lock_clock_sharp,
             color: Colors.white,
           ),
         ),
@@ -66,7 +66,7 @@ class InputLabelInnerRight extends StatelessWidget {
           color: Colors.pink,
           padding: const EdgeInsets.all(16),
           child: const Icon(
-            Icons.timelapse,
+            Icons.alarm,
             color: Colors.white,
           ),
         ),
@@ -76,6 +76,32 @@ class InputLabelInnerRight extends StatelessWidget {
 
 class InputLabelRounded extends StatelessWidget {
   const InputLabelRounded({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BeLabel(
+        innerLabel: false,
+        position: BeLabelPosition.rightCenter,
+        label: Container(
+          decoration: const BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(16),
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                  bottomRight: Radius.circular(16))),
+          padding: const EdgeInsets.all(16),
+          child: const Icon(
+            Icons.ads_click_sharp,
+            color: Colors.white,
+          ),
+        ),
+        child: const InputTextRounded());
+  }
+}
+
+class InputLabelRoundedRegular extends StatelessWidget {
+  const InputLabelRoundedRegular({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -90,47 +116,10 @@ class InputLabelRounded extends StatelessWidget {
                   bottomRight: Radius.circular(16))),
           padding: const EdgeInsets.all(16),
           child: const Icon(
-            Icons.timelapse,
+            Icons.bar_chart_rounded,
             color: Colors.white,
           ),
         ),
         child: const InputTextRounded());
-  }
-}
-
-class InputLabelRoundedRegular extends StatelessWidget {
-  const InputLabelRoundedRegular({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const InputTextRounded(),
-        Positioned(
-            right: 0,
-            bottom: 0,
-            top: 0,
-            child: Container(
-              padding: const EdgeInsets.all(
-                16,
-              ),
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(
-                    16,
-                  ),
-                  bottomRight: Radius.circular(
-                    16,
-                  ),
-                ),
-              ),
-              child: const Icon(
-                Icons.timelapse,
-                color: Colors.white,
-              ),
-            ))
-      ],
-    );
   }
 }

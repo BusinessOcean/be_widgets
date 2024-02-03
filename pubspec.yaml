@@ -1,13 +1,14 @@
 name: be_widgets
-description: Flutter package for badgeing and labeling widget along with any widget which reduce you amount of code segnificantly and also performance improvement.
-version: 1.0.2
+description: Flutter package for badging and labeling widget along with any widget which reduce you amount of code significantly and also performance improvement.
+version: 1.0.3
 homepage: https://github.com/BusinessOcean/be_widgets
 # https://pub.dev/packages/be_widgets
 
 #  --platforms=android,ios,linux,macos,windows
 repository: https://github.com/BusinessOcean/be_widgets
 screenshots:
-  - ./screenshots/screen-shot-1.png
+  - ./screenshots/screen-shot-2.png
+  - ./screenshots/screen-shot-3.png
 
 environment:
   sdk: '>=3.1.5 <4.0.0'

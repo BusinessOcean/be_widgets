@@ -1,4 +1,5 @@
-import 'package:example/example/single_example.dart';
+import 'package:be_widgets/be_widgets.dart';
+import 'package:example/example/input_label.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -38,21 +39,43 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: const SingleExample(),
-      // body: Container(
-      //   margin: const EdgeInsets.symmetric(vertical: 45, horizontal: 100),
-      //   child: ListView(
-      //     children: const [
-      //       InputLabel(),
-      //       boxGap,
-      //       InputLabelInnerRight(),
-      //       boxGap,
-      //       InputLabelRounded(),
-      //       boxGap,
-      //       InputLabelRoundedRegular()
-      //     ],
-      //   ),
-      // ),
+      // body: const SingleExample(),
+      body: Container(
+        margin: const EdgeInsets.symmetric(vertical: 45, horizontal: 100),
+        child: ListView(
+          children: [
+            BeBadge(
+              badge: FloatingActionButton.small(
+                backgroundColor: Colors.green,
+                onPressed: () {},
+                child: const Icon(
+                  Icons.notifications_active,
+                  color: Colors.white,
+                ),
+              ),
+              child: ElevatedButton(
+                  onPressed: () {},
+                  style: const ButtonStyle(
+                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)))),
+                      backgroundColor: MaterialStatePropertyAll(Colors.black)),
+                  child: const Padding(
+                    padding: EdgeInsets.all(18.0),
+                    child: Text("Button Widget",
+                        style: TextStyle(color: Colors.white)),
+                  )),
+            ),
+            boxGap,
+            const InputLabel(),
+            boxGap,
+            const InputLabelInnerRight(),
+            boxGap,
+            const InputLabelRounded(),
+            boxGap,
+            const InputLabelRoundedRegular()
+          ],
+        ),
+      ),
     );
   }
 }
