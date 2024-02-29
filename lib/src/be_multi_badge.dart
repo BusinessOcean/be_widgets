@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 /// Custom Flutter widget for rendering a badge on another widget </br>
-/// [child] of Widget Type. badge widget respects child widget dimention
+/// [child] of Widget Type. badge widget respects child widget dimension
 /// [rounded] will min(size.width, size.height) / 4 inside;
 class BeMultiBadge extends MultiChildRenderObjectWidget {
   BeMultiBadge({
@@ -172,7 +172,7 @@ class _BeMultiBadgeParentData extends ContainerBoxParentData<RenderBox>
 // ==========================================================================
 
 /// Custom Flutter widget for rendering a badge on another widget </br>
-/// [child] of Widget Type. badge widget respects child widget dimention
+/// [child] of Widget Type. badge widget respects child widget dimension
 /// [offset] translate widget to offset based on [Offset] default is [Offset.zero]
 /// [position] set alignment position of badge
 class BeBadgeChild extends SingleChildRenderObjectWidget {

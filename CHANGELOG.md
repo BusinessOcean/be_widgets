@@ -1,3 +1,5 @@
+## 1.0.4
+* Added BeOffset  for setting offset position without worry about boundary.
 ## 1.0.3
 * added more example
 * added screenshot

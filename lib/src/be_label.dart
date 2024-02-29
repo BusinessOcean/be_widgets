@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 /// Custom Flutter widget for rendering a label on another widget </br>
-/// [child] of Widget Type. badge widget respects child widget dimention
+/// [child] of Widget Type. badge widget respects child widget dimension
 /// [label] of Widget Type. badge widget respects child
 /// [childSized] make with of label full of hight or width size;
 /// [offset] translate widget to offset based on [Offset] default is [Offset.zero]

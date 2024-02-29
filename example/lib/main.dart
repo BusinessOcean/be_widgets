@@ -72,7 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
             boxGap,
             const InputLabelRounded(),
             boxGap,
-            const InputLabelRoundedRegular()
+            const InputLabelRoundedRegular(),
+            const BeOffset(
+              offset: Offset(-50, -30),
+              child: Text("Hello BeOffset"),
+            ),
+            const Text("This should be[Hello BeOffset] position"),
           ],
         ),
       ),
