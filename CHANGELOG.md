@@ -1,3 +1,5 @@
+## 1.1.0
+* Add BeOffset & BeTextMore widget. 
 ## 1.0.4
 * Added BeOffset  for setting offset position without worry about boundary.
 ## 1.0.3

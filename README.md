@@ -37,10 +37,15 @@ A widget for rendering multiple labels on a single widget.
 Supports customization of label positions, offsets, and styling.
 Usage
 
+- BeOffset Widget:
+
+A widget for rendering Child with offset. I'ts save time create complex widget without `Stack`
+
 
 ## Screenshot
   ![Screenshot-2](./screenshots/screen-shot-2.png)
   ![Screenshot-3](./screenshots/screen-shot-3.png)
+  ![Screenshot-3](./screenshots/screen-shot-4.png)
 
 
 To use this package in your Flutter project, add it to your pubspec.yaml file:

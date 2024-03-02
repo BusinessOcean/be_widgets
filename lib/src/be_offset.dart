@@ -7,24 +7,25 @@ import 'package:flutter/rendering.dart';
 /// [child] of Widget Type. badge widget respects child widget dimension
 /// [offset] translate widget to offset based on [Offset] default is [Offset.zero]
 class BeOffset extends SingleChildRenderObjectWidget {
-  const BeOffset({
-    super.key,
-    required super.child,
-    this.offset = Offset.zero,
-  });
+  const BeOffset(
+      {super.key,
+      required super.child,
+      this.offset = Offset.zero,
+      this.claimPosition = false});
   final Offset offset;
+  final bool claimPosition;
   @override
   RenderObject createRenderObject(BuildContext context) =>
-      _BeOffsetRenderObject(
-        offset: offset,
-      );
+      _BeOffsetRenderObject(offset: offset, claimPosition: claimPosition);
 
   @override
   void updateRenderObject(
     BuildContext context,
     _BeOffsetRenderObject renderObject,
   ) {
-    renderObject.offset = offset;
+    renderObject
+      ..offset = offset
+      ..claimPosition = claimPosition;
   }
 }
 
@@ -32,7 +33,9 @@ class _BeOffsetRenderObject extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
   _BeOffsetRenderObject({
     required Offset offset,
-  }) : _offset = offset;
+    required bool claimPosition,
+  })  : _offset = offset,
+        _claimPosition = claimPosition;
 
   Offset _offset;
   set offset(Offset value) {
@@ -40,12 +43,26 @@ class _BeOffsetRenderObject extends RenderBox
     markNeedsPaint();
   }
 
+  bool _claimPosition;
+
+  set claimPosition(bool value) {
+    _claimPosition = value;
+    markNeedsPaint();
+  }
+
+  @override
+  void setupParentData(covariant RenderObject child) {
+    child.parentData = _BeBadgeChildParentData();
+  }
+
   @override
   void performLayout() {
     final child = this.child;
     if (child != null) {
       child.layout(constraints, parentUsesSize: true);
-      size = constraints.constrain(child.size + _offset);
+      (_claimPosition)
+          ? size = constraints.constrain(child.size)
+          : size = constraints.constrain(child.size + _offset);
     } else {
       size = constraints.smallest;
     }
@@ -61,8 +78,11 @@ class _BeOffsetRenderObject extends RenderBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    // Transform the hit position based on the child's offset
+  bool hitTest(BoxHitTestResult result, {required Offset position}) {
     return child?.hitTest(result, position: position - _offset) == true;
   }
 }
+
+// Custom parent data for the BeBadge widget
+class _BeBadgeChildParentData extends ContainerBoxParentData<RenderBox>
+    with ContainerParentDataMixin<RenderBox> {}
