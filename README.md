@@ -1,3 +1,5 @@
+
+
 <!--
 This README describes the package. If you publish this package to pub.dev,
 this README's contents appear on the landing page for your package.
@@ -207,3 +209,31 @@ This package is released under the MIT License. See the LICENSE file for details
 Do What ever you want with this package like.
 
 Happy coding with be_widget!
+
+
+# Support My Work
+
+Thank you for checking out our project! We're thrilled to have you here.
+
+If you find our project useful and it has helped you in any way, please consider supporting our work. Your contribution will help us continue to improve this project and create more useful tools for the community.
+
+## How You Can Help
+
+### Donate
+If you'd like to contribute financially, you can make a donation to our project. Even a small amount can make a big difference and will be greatly appreciated.
+ 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/SouravKumarPandit)
+
+### Spread the Word
+Help us reach more people by sharing our project with your friends, colleagues, and on social media. The more visibility we get, the more support we can receive.
+
+### Contribute
+If you're a developer, you can contribute to the project by submitting bug reports, feature requests, or even code contributions. Check out our [Contribution Guidelines](CONTRIBUTING.md) to get started.
+
+## Get in Touch
+We'd love to hear from you! If you have any questions, feedback, or suggestions, please don't hesitate to reach out to us.
+
+- Email: [businessocean.pvt.ltd@gmail.com](mailto:businessocean.pvt.ltd@gmail.com)
+- Twitter: [@soupandit](https://twitter.com/soupandit)
+
+Thank you for your support!
