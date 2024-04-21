@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 
 enum BeEllipsis { start, middle, end }
 
+// Not Ready for production use
 class BeTextMore extends LeafRenderObjectWidget {
   final String text;
   final TextStyle? style;

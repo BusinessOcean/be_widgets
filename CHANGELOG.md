@@ -1,3 +1,5 @@
+## 1.1.1
+* flutter lint upgrade. 
 ## 1.1.0
 * Add BeOffset & BeTextMore widget. 
 ## 1.0.4
