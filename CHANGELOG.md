@@ -1,3 +1,5 @@
+## 1.1.3
+* version bump. 
 ## 1.1.2
 * flutter lint upgrade. 
 ## 1.1.1

@@ -1,146 +1,135 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
-enum BeEllipsis { start, middle, end }
-
-// Not Ready for production use
 class BeTextMore extends LeafRenderObjectWidget {
   final String text;
-  final TextStyle? style;
-  final BeEllipsis ellipsis;
-  final int displayLines;
-  final String expandText;
-  final String collapsedText;
+  final TextStyle textStyle;
+  final int maxLines;
+  final bool isExpanded;
+  final VoidCallback onToggle;
 
-  const BeTextMore(
-    this.text, {
+  const BeTextMore({
     super.key,
-    this.style,
-    this.ellipsis = BeEllipsis.end,
-    this.displayLines = 2,
-    this.expandText = 'More',
-    this.collapsedText = 'Less',
+    required this.text,
+    this.textStyle = const TextStyle(),
+    this.maxLines = 1,
+    this.isExpanded = true,
+    required this.onToggle,
   });
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _RenderBeTextMore(
-        text: text,
-        style: style ?? DefaultTextStyle.of(context).style,
-        ellipsis: ellipsis,
-        displayLines: displayLines,
-        expandText: expandText,
-        collapsedText: collapsedText,
-        textDirection: Directionality.of(context));
+    return BeTextMoreRender(
+      text: text,
+      textStyle: textStyle,
+      maxLines: maxLines,
+      textDirection: Directionality.of(context),
+      isExpanded: isExpanded,
+      onToggle: onToggle,
+    );
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, covariant RenderObject renderObject) {
-    super.updateRenderObject(context, renderObject);
+  void updateRenderObject(BuildContext context, BeTextMoreRender renderObject) {
+    renderObject
+      ..text = text
+      ..isExpanded = isExpanded;
   }
 }
 
-class _RenderBeTextMore extends RenderBox {
-  final TextPainter _textPainter = TextPainter();
-  String text;
-  TextStyle style;
-  BeEllipsis ellipsis;
-  int displayLines;
-  String expandText;
-  String collapsedText;
-  TextDirection textDirection;
-
-  bool _isExpanded = false;
-  late final TapGestureRecognizer _tapGestureRecognizer;
-
-  _RenderBeTextMore({
-    required this.text,
-    required this.style,
-    required this.ellipsis,
-    required this.displayLines,
-    required this.expandText,
-    required this.collapsedText,
-    required this.textDirection,
+class BeTextMoreRender extends RenderBox {
+  BeTextMoreRender({
+    required String text,
+    TextStyle textStyle = const TextStyle(),
+    int maxLines = 10,
+    TextDirection textDirection = TextDirection.ltr,
+    required void Function() onToggle,
+    bool isExpanded = false,
   }) {
-    _tapGestureRecognizer = TapGestureRecognizer()..onTap = _handleTap;
+    _text = text;
+    _textStyle = textStyle;
+    _maxLines = maxLines;
+    _textDirection = textDirection;
+    _onToggle = onToggle;
+    _isExpanded = isExpanded;
+
+    _textPainter = TextPainter(
+      text: TextSpan(text: _text, style: _textStyle),
+      textDirection: _textDirection,
+      maxLines: _isExpanded ? null : _maxLines,
+      ellipsis: _isExpanded ? null : '...',
+    );
   }
 
-  void _handleTap() {
-    _isExpanded = !_isExpanded;
+  late String _text;
+  late TextStyle _textStyle;
+  late int _maxLines;
+  late TextDirection _textDirection;
+  late TextPainter _textPainter;
+  late bool _isExpanded;
+  late void Function() _onToggle;
+
+  String get text => _text;
+  set text(String val) {
+    if (_text != val) {
+      _text = val;
+      _updateTextPainter();
+    }
+  }
+
+  set isExpanded(bool val) {
+    if (_isExpanded != val) {
+      _isExpanded = val;
+      _updateTextPainter();
+    }
+  }
+
+  void _updateTextPainter() {
+    _textPainter.text = TextSpan(text: _text, style: _textStyle);
+    _textPainter.maxLines = _isExpanded ? null : _maxLines;
+    _textPainter.ellipsis = _isExpanded ? null : '...';
     markNeedsLayout();
-  }
-
-  @override
-  void detach() {
-    _tapGestureRecognizer.dispose();
-    super.detach();
+    markNeedsPaint();
   }
 
   @override
   void performLayout() {
-    final link = TextSpan(
-      text: _isExpanded ? collapsedText : expandText,
-      style: style.copyWith(color: Colors.blue),
-    );
-    final linkPainter = TextPainter(
-      text: link,
-      textDirection: textDirection,
-      maxLines: 1,
-    );
-    linkPainter.layout();
-
-    // compute the text span that fits within the allowed lines
-    _textPainter
-      ..text = TextSpan(text: text, style: style)
-      ..maxLines = _isExpanded ? null : displayLines
-      ..textDirection = textDirection;
     _textPainter.layout(maxWidth: constraints.maxWidth);
-
-    final linkLength = linkPainter.width;
-    // final textLength = _textPainter.width;
-
-    if (!_isExpanded && _textPainter.didExceedMaxLines) {
-      String eclipsedText = text;
-      int cutoffIndex = text.length;
-
-      while (_textPainter.didExceedMaxLines) {
-        cutoffIndex--;
-        eclipsedText = '${text.substring(0, cutoffIndex)}...';
-        _textPainter.text = TextSpan(text: eclipsedText, style: style);
-        _textPainter.layout(maxWidth: constraints.maxWidth - linkLength);
-      }
-
-      _textPainter.text = TextSpan(
-        text: eclipsedText,
-        style: style,
-        children: [link],
-      );
-      _textPainter.layout(maxWidth: constraints.maxWidth);
-    }
-    size = Size(constraints.maxWidth,
-        _isExpanded ? _textPainter.height : style.fontSize! * displayLines);
+    size = constraints.constrain(
+      Size(_textPainter.width, _textPainter.height),
+    );
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
     _textPainter.paint(context.canvas, offset);
+
+    final toggleText = _isExpanded ? '' : '...';
+    final toggleTextPainter = TextPainter(
+      text: TextSpan(
+        text: toggleText,
+        style: _textStyle.copyWith(
+            color: Colors.blue, fontWeight: FontWeight.bold),
+      ),
+      textDirection: _textDirection,
+    );
+    toggleTextPainter.layout();
+
+    final toggleOffset = Offset(
+      offset.dx + _textPainter.width - toggleTextPainter.width,
+      offset.dy + _textPainter.height - toggleTextPainter.height,
+    );
+
+    toggleTextPainter.paint(context.canvas, toggleOffset);
   }
 
   @override
   bool hitTestSelf(Offset position) => true;
 
   @override
-  void handleEvent(PointerEvent event, covariant BoxHitTestEntry entry) {
-    if (event is PointerDownEvent) {
-      _tapGestureRecognizer.addPointer(event);
+  void handleEvent(PointerEvent event, HitTestEntry entry) {
+    if (event is PointerUpEvent) {
+      _onToggle();
     }
-  }
-
-  @override
-  void dispose() {
-    _tapGestureRecognizer.dispose();
-    super.dispose();
   }
 }

@@ -1,4 +1,4 @@
-library be_widgets;
+library;
 
 export 'src/be_badge.dart';
 export 'src/be_label.dart';

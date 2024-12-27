@@ -9,10 +9,10 @@ extension FlexColorExtensions on Color {
     if (amount <= 0) return this;
     if (amount > 100) return Colors.white;
     final color = Color.fromARGB(
-      alpha,
-      math.max(0, math.min(255, red - (255 * -(amount / 100)).round())),
-      math.max(0, math.min(255, green - (255 * -(amount / 100)).round())),
-      math.max(0, math.min(255, blue - (255 * -(amount / 100)).round())),
+      a.toInt(),
+      math.max(0, math.min(255, r - (255 * -(amount / 100)).round()).toInt()),
+      math.max(0, math.min(255, g - (255 * -(amount / 100)).round()).toInt()),
+      math.max(0, math.min(255, b - (255 * -(amount / 100)).round()).toInt()),
     );
     return color;
   }
@@ -57,4 +57,14 @@ Brightness getBrightness(Color color) {
   return ((relativeLuminance + 0.05) * (relativeLuminance + 0.05) > kThreshold)
       ? Brightness.light
       : Brightness.dark;
+}
+
+Color getRandomColor() {
+  final random = math.Random();
+  return Color.fromARGB(
+    255, // Fully opaque
+    random.nextInt(256), // Red (0-255)
+    random.nextInt(256), // Green (0-255)
+    random.nextInt(256), // Blue (0-255)
+  );
 }

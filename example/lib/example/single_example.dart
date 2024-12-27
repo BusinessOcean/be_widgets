@@ -154,4 +154,4 @@ extension _Widget on Widget {
 }
 
 Color randomColor() =>
-    Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+    Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withAlpha(150);
