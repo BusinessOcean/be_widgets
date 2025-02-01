@@ -1,3 +1,5 @@
+## 1.1.4
+* Added BeTextMore for long text display and controll with maxLine. 
 ## 1.1.3
 * version bump. 
 ## 1.1.2

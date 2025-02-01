@@ -1,135 +1,221 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class BeTextMore extends LeafRenderObjectWidget {
   final String text;
-  final TextStyle textStyle;
   final int maxLines;
-  final bool isExpanded;
-  final VoidCallback onToggle;
+  final TextStyle style;
+  final TextStyle linkStyle;
+  final String expandText;
+  final String collapseText;
 
   const BeTextMore({
     super.key,
     required this.text,
-    this.textStyle = const TextStyle(),
-    this.maxLines = 1,
-    this.isExpanded = true,
-    required this.onToggle,
+    this.maxLines = 3,
+    this.style = const TextStyle(fontSize: 14),
+    this.linkStyle = const TextStyle(color: Colors.blue),
+    this.expandText = 'More',
+    this.collapseText = 'Less',
   });
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return BeTextMoreRender(
+    return RenderExpandableText(
       text: text,
-      textStyle: textStyle,
       maxLines: maxLines,
+      style: style,
+      linkStyle: linkStyle,
+      expandText: expandText,
+      collapseText: collapseText,
       textDirection: Directionality.of(context),
-      isExpanded: isExpanded,
-      onToggle: onToggle,
     );
   }
 
   @override
-  void updateRenderObject(BuildContext context, BeTextMoreRender renderObject) {
+  void updateRenderObject(
+      BuildContext context, RenderExpandableText renderObject) {
     renderObject
       ..text = text
-      ..isExpanded = isExpanded;
+      ..maxLines = maxLines
+      ..style = style
+      ..linkStyle = linkStyle
+      ..expandText = expandText
+      ..collapseText = collapseText
+      ..textDirection = Directionality.of(context);
   }
 }
 
-class BeTextMoreRender extends RenderBox {
-  BeTextMoreRender({
+class RenderExpandableText extends RenderBox {
+  RenderExpandableText({
     required String text,
-    TextStyle textStyle = const TextStyle(),
-    int maxLines = 10,
-    TextDirection textDirection = TextDirection.ltr,
-    required void Function() onToggle,
-    bool isExpanded = false,
-  }) {
-    _text = text;
-    _textStyle = textStyle;
-    _maxLines = maxLines;
-    _textDirection = textDirection;
-    _onToggle = onToggle;
-    _isExpanded = isExpanded;
-
-    _textPainter = TextPainter(
-      text: TextSpan(text: _text, style: _textStyle),
-      textDirection: _textDirection,
-      maxLines: _isExpanded ? null : _maxLines,
-      ellipsis: _isExpanded ? null : '...',
-    );
+    required int maxLines,
+    required TextStyle style,
+    required TextStyle linkStyle,
+    required String expandText,
+    required String collapseText,
+    required TextDirection textDirection,
+  })  : _text = text,
+        _maxLines = maxLines,
+        _style = style,
+        _linkStyle = linkStyle,
+        _expandText = expandText,
+        _collapseText = collapseText,
+        _textDirection = textDirection {
+    _updateTextPainter();
   }
 
-  late String _text;
-  late TextStyle _textStyle;
-  late int _maxLines;
-  late TextDirection _textDirection;
+  String _text;
+  int _maxLines;
+  TextStyle _style;
+  TextStyle _linkStyle;
+  String _expandText;
+  String _collapseText;
+  TextDirection _textDirection;
+  bool _isExpanded = false;
+  bool _needsLink = false;
   late TextPainter _textPainter;
-  late bool _isExpanded;
-  late void Function() _onToggle;
+  late TextSpan _combinedSpan;
+  late Rect _linkRect;
 
-  String get text => _text;
-  set text(String val) {
-    if (_text != val) {
-      _text = val;
-      _updateTextPainter();
-    }
+  set text(String value) {
+    if (_text == value) return;
+    _text = value;
+    _updateTextPainter();
+    markNeedsLayout();
   }
 
-  set isExpanded(bool val) {
-    if (_isExpanded != val) {
-      _isExpanded = val;
-      _updateTextPainter();
-    }
+  set maxLines(int value) {
+    if (_maxLines == value) return;
+    _maxLines = value;
+    markNeedsLayout();
+  }
+
+  set style(TextStyle value) {
+    if (_style == value) return;
+    _style = value;
+    _updateTextPainter();
+    markNeedsLayout();
+  }
+
+  set linkStyle(TextStyle value) {
+    if (_linkStyle == value) return;
+    _linkStyle = value;
+    _updateTextPainter();
+    markNeedsLayout();
+  }
+
+  set expandText(String value) {
+    if (_expandText == value) return;
+    _expandText = value;
+    _updateTextPainter();
+    markNeedsLayout();
+  }
+
+  set collapseText(String value) {
+    if (_collapseText == value) return;
+    _collapseText = value;
+    _updateTextPainter();
+    markNeedsLayout();
+  }
+
+  set textDirection(TextDirection value) {
+    if (_textDirection == value) return;
+    _textDirection = value;
+    _updateTextPainter();
+    markNeedsLayout();
   }
 
   void _updateTextPainter() {
-    _textPainter.text = TextSpan(text: _text, style: _textStyle);
-    _textPainter.maxLines = _isExpanded ? null : _maxLines;
-    _textPainter.ellipsis = _isExpanded ? null : '...';
-    markNeedsLayout();
-    markNeedsPaint();
+    final linkText = _isExpanded ? _collapseText : _expandText;
+
+    _combinedSpan = TextSpan(
+      children: [
+        TextSpan(text: _text, style: _style),
+        if (_needsLink || _isExpanded)
+          TextSpan(text: ' $linkText', style: _linkStyle),
+      ],
+    );
+
+    _textPainter = TextPainter(
+      text: _combinedSpan,
+      textDirection: _textDirection,
+      maxLines: _isExpanded ? null : _maxLines,
+      ellipsis: _isExpanded ? null : '... $linkText',
+    );
   }
 
   @override
   void performLayout() {
-    _textPainter.layout(maxWidth: constraints.maxWidth);
-    size = constraints.constrain(
-      Size(_textPainter.width, _textPainter.height),
+    final constraints = this.constraints;
+    final maxWidth = constraints.maxWidth;
+
+    // Check if text fits without link
+    final testPainter = TextPainter(
+      text: TextSpan(text: _text, style: _style),
+      textDirection: _textDirection,
+      maxLines: _maxLines,
     );
+    testPainter.layout(maxWidth: maxWidth);
+    _needsLink = testPainter.didExceedMaxLines;
+
+    // Layout actual text with link
+    _updateTextPainter();
+    _textPainter.layout(maxWidth: maxWidth);
+
+    // Calculate link rectangle for hit testing
+    final linkText = _isExpanded ? _collapseText : _expandText;
+    final linkOffset = _textPainter.getOffsetForCaret(
+      TextPosition(offset: _combinedSpan.toPlainText().indexOf(linkText)),
+      Rect.zero,
+    );
+    final linkWidth = _textPainter.width;
+    final linkHeight = _textPainter.preferredLineHeight;
+    _linkRect = Rect.fromLTWH(
+      linkOffset.dx,
+      linkOffset.dy,
+      linkWidth,
+      linkHeight,
+    );
+
+    // Set final size
+    size = constraints.constrain(_textPainter.size);
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
     _textPainter.paint(context.canvas, offset);
-
-    final toggleText = _isExpanded ? '' : '...';
-    final toggleTextPainter = TextPainter(
-      text: TextSpan(
-        text: toggleText,
-        style: _textStyle.copyWith(
-            color: Colors.blue, fontWeight: FontWeight.bold),
-      ),
-      textDirection: _textDirection,
-    );
-    toggleTextPainter.layout();
-
-    final toggleOffset = Offset(
-      offset.dx + _textPainter.width - toggleTextPainter.width,
-      offset.dy + _textPainter.height - toggleTextPainter.height,
-    );
-
-    toggleTextPainter.paint(context.canvas, toggleOffset);
   }
 
   @override
   bool hitTestSelf(Offset position) => true;
 
   @override
-  void handleEvent(PointerEvent event, HitTestEntry entry) {
-    if (event is PointerUpEvent) {
-      _onToggle();
+  void handleEvent(PointerEvent event, covariant BoxHitTestEntry entry) {
+    if (event is PointerUpEvent && _needsLink) {
+      final localPosition = event.localPosition;
+      if (_linkRect.contains(localPosition)) {
+        _isExpanded = !_isExpanded;
+        _updateTextPainter();
+        markNeedsLayout();
+        markNeedsPaint();
+      }
     }
+  }
+
+  @override
+  void describeSemanticsConfiguration(SemanticsConfiguration config) {
+    super.describeSemanticsConfiguration(config);
+    config
+      ..label = _text
+      ..textDirection = _textDirection
+      ..onTap = () {
+        if (_needsLink) {
+          _isExpanded = !_isExpanded;
+          _updateTextPainter();
+          markNeedsLayout();
+          markNeedsPaint();
+        }
+      };
   }
 }

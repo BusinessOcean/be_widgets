@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.all(32),
         child: Container(
           // color: getRandomColor().lighten(0),
-          child: Column(
+          child: const Column(
             children: [
               // Container(
               //   color: Colors.black,
@@ -116,12 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     'irure reprehenderit incididunt magna culpa. Consequat proident nulla id magna'
                     ' cillum voluptate exercitation quis dolore eu. Reprehenderit non aliqua laborum'
                     ' consectetur pariatur tempor cupidatat incididunt enim.',
-                textStyle: const TextStyle(color: Colors.black),
-                maxLines: 1,
-                onToggle: () => setState(() {
-                  isExpanded = !isExpanded;
-                }),
-                isExpanded: isExpanded,
+                maxLines: 3,
               )
               // Container(
               //   color: Colors.red,
