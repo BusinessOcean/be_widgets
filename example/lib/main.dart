@@ -11,11 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.system,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-        useMaterial3: true,
-      ),
+      theme: ThemeData.light(),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -36,148 +34,231 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
       // body: const SingleExample(),
       body: Container(
         padding: const EdgeInsets.all(32),
-        child: Container(
+        child: SingleChildScrollView(
           // color: getRandomColor().lighten(0),
-          child: const Column(
+          child: Column(
             children: [
-              // Container(
-              //   color: Colors.black,
-              //   width: double.infinity,
-              //   height: 150,
-              //   child: const Text(
-              //     "I Got drawn first so I am behind\n I am regular container with height 150 like other",
-              //     textAlign: TextAlign.center,
-              //     style: TextStyle(
-              //       fontWeight: FontWeight.bold,
-              //       fontSize: 14,
-              //       color: Colors.white,
-              //     ),
+              // BeTextMore(
+              //   text:
+              //       'Culpa tempor laborum eu quis est laborum qui dolor laborum '
+              //       'dolor consectetur culpa. Dolore ea pariatur mollit ipsum'
+              //       ' exercitation excepteur et. Dolore duis id in voluptate laboris'
+              //       ' commodo qui fugiat quis. Sunt mollit do minim reprehenderit pariatur '
+              //       'deserunt quis. Anim duis laboris pariatur incididunt ex velit cupidatat '
+              //       'cillum qui. Amet pariatur laboris occaecat nostrud aliqua dolor aliqua. '
+              //       'Enim ex consequat dolor elit. Aliquip ipsum do ad in pariatur deserunt'
+              //       ' consequat commodo magna sint. Ex et excepteur magna laboris ad consequat'
+              //       ' ex reprehenderit magna ullamco veniam. Elit Lorem voluptate ut culpa aliquip '
+              //       'irure reprehenderit incididunt magna culpa. Consequat proident nulla id magna'
+              //       ' cillum voluptate exercitation quis dolore eu. Reprehenderit non aliqua laborum'
+              //       ' consectetur pariatur tempor cupidatat incididunt enim.',
+              //   style: TextStyle(
+              //     fontSize: 16,
+              //     color: Colors.grey.shade200,
               //   ),
-              // ),
-              // BeOffset(
-              //   offset: const Offset(-50, -100),
-              //   child: Container(
-              //     color: Colors.blue,
-              //     height: 150,
-              //     child: InkWell(
-              //       onTap: () {
-              //         ScaffoldMessenger.of(context).showSnackBar(
-              //           const SnackBar(
-              //             content: Text('BeOffset Got clicked!!!1'),
+              //   maxLines: 3,
+              // )
+              // Row(
+              //   children: [
+              //     Container(
+              //       width: 200,
+              //       height: 200,
+              //       decoration: const BeBoxDecoration(
+              //         color: Colors.white,
+              //         shape: BoxShape.circle,
+              //         boxShadow: [
+              //           BeBoxShadow(
+              //             color: Colors.black26,
+              //             offset: Offset(4, 4),
+              //             blurRadius: 10,
+              //             spreadRadius: 2,
+              //             inset: false,
               //           ),
-              //         );
-              //       },
+              //           BeBoxShadow(
+              //             color: Colors.white24,
+              //             offset: Offset(-4, -4),
+              //             blurRadius: 10,
+              //             spreadRadius: 2,
+              //             inset: true,
+              //           ),
+              //         ],
+              //       ),
               //       child: const Center(
               //         child: Text(
-              //           "Child with offset by BeOffset\n I am also size of Orange and Black Tile\n in column with offset: const Offset(-50, -100)",
-              //           textAlign: TextAlign.center,
-              //           style: TextStyle(
-              //             fontWeight: FontWeight.bold,
-              //             fontSize: 14,
-              //             color: Colors.white,
+              //           'Hello, BeBox!',
+              //           style: TextStyle(color: Colors.black, fontSize: 18),
+              //         ),
+              //       ),
+              //     ),
+              //     Container(
+              //       width: 200,
+              //       height: 200,
+              //       decoration: const BeBoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: BorderRadius.all(Radius.circular(20)),
+              //         boxShadow: [
+              //           BeBoxShadow(
+              //             color: Colors.black26,
+              //             offset: Offset(4, 4),
+              //             blurRadius: 10,
+              //             spreadRadius: 2,
+              //             inset: false,
+              //           ),
+              //           BeBoxShadow(
+              //             color: Colors.white24,
+              //             offset: Offset(-4, -4),
+              //             blurRadius: 10,
+              //             spreadRadius: 2,
+              //             inset: true,
+              //           ),
+              //         ],
+              //       ),
+              //       child: const Center(
+              //         child: Text(
+              //           'Hello, BeBox!',
+              //           style: TextStyle(color: Colors.black, fontSize: 18),
+              //         ),
+              //       ),
+              //     ),
+              //     Container(
+              //       width: 200,
+              //       height: 200,
+              //       decoration: BeBoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: const BorderRadius.all(Radius.circular(20)),
+              //         boxShadow: [
+              //           const BeBoxShadow(
+              //             color: Colors.blue,
+              //             offset: Offset(4, 4),
+              //             blurRadius: 10,
+              //             spreadRadius: 2,
+              //           ),
+              //           BeBoxShadow(
+              //             color: Colors.red.shade200,
+              //             offset: const Offset(-4, -4),
+              //             blurRadius: 10,
+              //             spreadRadius: 2,
+              //           ),
+              //           BeBoxShadow(
+              //             color: Colors.yellow.shade200,
+              //             offset: const Offset(0, -4),
+              //             blurRadius: 10,
+              //             spreadRadius: 2,
+              //           ),
+              //         ],
+              //       ),
+              //       child: const Center(
+              //         child: Text(
+              //           'Hello, BeBox!',
+              //           style: TextStyle(color: Colors.black, fontSize: 18),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // Row(
+              //   children: [
+              //     Container(
+              //       width: 200,
+              //       height: 200,
+              //       decoration: const BeBoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: BorderRadius.all(Radius.circular(20)),
+              //         boxShadow: [
+              //           BeBoxShadow(
+              //             color: Colors.black26,
+              //             offset: Offset(4, 4),
+              //             blurRadius: 10,
+              //             spreadRadius: 2,
+              //             inset: false,
+              //           ),
+              //           BeBoxShadow(
+              //             color: Colors.red,
+              //             offset: Offset(-4, -4),
+              //             blurRadius: 10,
+              //             spreadRadius: 2,
+              //             inset: true,
+              //           ),
+              //         ],
+              //       ),
+              //       child: const Center(
+              //         child: Padding(
+              //           padding: EdgeInsets.all(8.0),
+              //           child: Text(
+              //             'Hello, BeBox! with inset shadow',
+              //             style: TextStyle(color: Colors.black, fontSize: 18),
               //           ),
               //         ),
               //       ),
               //     ),
-              //   ),
-              // ),
-              // Container(
-              //   color: Colors.orange,
-              //   height: 150,
-              //   child: const Center(
-              //     child: Text(
-              //       "I regular container but adjusted with offset \n Also blue container push me down if const Offset( 0, 100),\n Imagine you have build this with existing widget\n give it a try",
-              //       textAlign: TextAlign.center,
-              //       style: TextStyle(
-              //         fontWeight: FontWeight.bold,
-              //         fontSize: 14,
+              //     Container(
+              //       width: 200,
+              //       height: 200,
+              //       decoration: const BeBoxDecoration(
               //         color: Colors.white,
+              //         borderRadius: BorderRadius.all(Radius.circular(20)),
+              //         boxShadow: [
+              //           BeBoxShadow(
+              //             color: Colors.black26,
+              //             offset: Offset(4, 4),
+              //             blurRadius: 10,
+              //             spreadRadius: 2,
+              //             inset: false,
+              //           ),
+              //           BeBoxShadow(
+              //             color: Colors.black12,
+              //             offset: Offset(4, 4),
+              //             blurRadius: 10,
+              //             spreadRadius: 20,
+              //           ),
+              //         ],
+              //       ),
+              //       child: const Center(
+              //         child: Padding(
+              //           padding: EdgeInsets.all(8.0),
+              //           child: Text(
+              //             'Shadow with donest disturb other layout width',
+              //             textAlign: TextAlign.center,
+              //             style: TextStyle(color: Colors.black, fontSize: 18),
+              //           ),
+              //         ),
               //       ),
               //     ),
-              //   ),
+              //   ],
               // ),
-              BeTextMore(
-                text:
-                    'Culpa tempor laborum eu quis est laborum qui dolor laborum '
-                    'dolor consectetur culpa. Dolore ea pariatur mollit ipsum'
-                    ' exercitation excepteur et. Dolore duis id in voluptate laboris'
-                    ' commodo qui fugiat quis. Sunt mollit do minim reprehenderit pariatur '
-                    'deserunt quis. Anim duis laboris pariatur incididunt ex velit cupidatat '
-                    'cillum qui. Amet pariatur laboris occaecat nostrud aliqua dolor aliqua. '
-                    'Enim ex consequat dolor elit. Aliquip ipsum do ad in pariatur deserunt'
-                    ' consequat commodo magna sint. Ex et excepteur magna laboris ad consequat'
-                    ' ex reprehenderit magna ullamco veniam. Elit Lorem voluptate ut culpa aliquip '
-                    'irure reprehenderit incididunt magna culpa. Consequat proident nulla id magna'
-                    ' cillum voluptate exercitation quis dolore eu. Reprehenderit non aliqua laborum'
-                    ' consectetur pariatur tempor cupidatat incididunt enim.',
-                maxLines: 3,
-              )
-              // Container(
-              //   color: Colors.red,
-              //   height: 50,
-              //   child: const Center(
-              //     child: Text(
-              //       "LAST ITEM IN COLUMN",
-              //       textAlign: TextAlign.center,
-              //       style: TextStyle(
-              //         fontWeight: FontWeight.bold,
-              //         fontSize: 14,
-              //         color: Colors.white,
-              //       ),
-              //     ),
-              //   ),
-              // )
+              ...BeIconAlignment.values.map(
+                (v) => Container(
+                  width: 400,
+                  height: 200,
+                  decoration: ShapeDecoration(
+                    shape: BeIconShapeBorder(
+                      icon: Icons.add_box,
+                      size: 46,
+                      radius: 8,
+                      color: Colors.grey,
+                      width: 2,
+                      alignment: v,
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(
+                        "Hello BeIconShapeBorder",
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
-
-      // body: Container(
-      //   margin: const EdgeInsets.symmetric(vertical: 45, horizontal: 100),
-      //   child: ListView(
-      //     children: [
-      //       BeBadge(
-      //         badge: FloatingActionButton.small(
-      //           backgroundColor: Colors.green,
-      //           onPressed: () {},
-      //           child: const Icon(
-      //             Icons.notifications_active,
-      //             color: Colors.white,
-      //           ),
-      //         ),
-      //         child: ElevatedButton(
-      //             onPressed: () {},
-      //             style: const ButtonStyle(
-      //                 shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-      //                     borderRadius: BorderRadius.all(Radius.circular(8)))),
-      //                 backgroundColor: MaterialStatePropertyAll(Colors.black)),
-      //             child: const Padding(
-      //               padding: EdgeInsets.all(18.0),
-      //               child: Text("Button Widget",
-      //                   style: TextStyle(color: Colors.white)),
-      //             )),
-      //       ),
-      //       boxGap,
-      //       const InputLabel(),
-      //       boxGap,
-      //       const InputLabelInnerRight(),
-      //       boxGap,
-      //       const InputLabelRounded(),
-      //       boxGap,
-      //       const InputLabelRoundedRegular(),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }
-
-const SizedBox boxGap = SizedBox(
-  height: 24,
-);
