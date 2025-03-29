@@ -214,6 +214,8 @@ This package provides two custom Flutter components:
 
 ## BeBoxDecoration
 
+![Screenshot-3](./screenshots/screen-shot-5.png)
+
 ### Features
 
 - Custom shadow support (`BeBoxShadow` with inset/outset capabilities).
@@ -249,6 +251,8 @@ Container(
 ---
 
 ## BeIconShapeBorder
+
+![Screenshot-3](./screenshots/screen-shot-1.png)
 
 ### Features
 

@@ -1,3 +1,7 @@
+## 1.1.6
+
+- updated screenshot
+
 ## 1.1.5
 
 - Add BeBoxDecoration & BeIconShapeBorder decoration component
