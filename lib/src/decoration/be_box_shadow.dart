@@ -20,13 +20,13 @@ class BeBoxShadow extends BoxShadow {
   /// Returns a new box shadow with its offset, blurRadius, and spreadRadius scaled by the given factor.
   @override
   BeBoxShadow scale(double factor) => BeBoxShadow(
-    color: color,
-    offset: offset * factor,
-    blurRadius: blurRadius * factor,
-    spreadRadius: spreadRadius * factor,
-    blurStyle: blurStyle,
-    inset: inset,
-  );
+        color: color,
+        offset: offset * factor,
+        blurRadius: blurRadius * factor,
+        spreadRadius: spreadRadius * factor,
+        blurStyle: blurStyle,
+        inset: inset,
+      );
 
   /// Linearly interpolate between two box shadows.
   ///
