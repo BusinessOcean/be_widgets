@@ -1,3 +1,7 @@
+## 1.1.7
+
+- fixed icon decoration type
+
 ## 1.1.6
 
 - updated screenshot

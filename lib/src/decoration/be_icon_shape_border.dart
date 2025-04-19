@@ -1,28 +1,4 @@
-// Center(
-//               child: Container(
-//                 width: 100,
-//                 height: 100,
-//                 decoration: const ShapeDecoration(
-//                   shape: BeIconOutlinedBorder(
-//                     iconData: Icons.import_contacts_sharp,
-//                     iconSize: 24,
-//                     roundRadius: 8,
-//                     borderColor: Colors.red,
-//                     borderWidth: 2,
-//                     iconAlignment: BeIconAlignment.bottomRight,
-//                     iconOffset: Offset(
-//                       -100,
-//                       10,
-//                     ), // Adjust icon position slightly inward
-//                   ),
-//                 ),
-//                 child: const Center(
-//                   child: Text("Hello", style: TextStyle(color: Colors.green)),
-//                 ),
-//               ),
-//             ),
-
-import 'package:flutter/material.dart' hide IconAlignment;
+import 'package:flutter/material.dart';
 
 enum BeIconAlignment {
   topLeft,
@@ -39,21 +15,25 @@ enum BeIconAlignment {
 class BeIconShapeBorder extends OutlinedBorder {
   const BeIconShapeBorder({
     required this.icon,
-    this.color = Colors.transparent,
     this.size = 24.0,
     this.radius = 4.0,
+    this.color,
     this.width = 2.0,
     this.alignment = BeIconAlignment.topCenter,
     this.offset = Offset.zero,
+    this.iconInset = 8.0,
+    this.iconStyle,
   });
 
   final IconData icon;
   final double size;
-  final Color color;
+  final Color? color;
   final double radius;
   final double width;
   final BeIconAlignment alignment;
   final Offset offset;
+  final double iconInset; // New property
+  final TextStyle? iconStyle; // New property
 
   @override
   EdgeInsetsGeometry get dimensions => EdgeInsets.all(width);
@@ -67,6 +47,11 @@ class BeIconShapeBorder extends OutlinedBorder {
         width: width * t,
         alignment: alignment,
         offset: offset * t,
+        iconInset: iconInset * t,
+        iconStyle: iconStyle?.copyWith(
+          fontSize:
+              iconStyle?.fontSize != null ? iconStyle!.fontSize! * t : null,
+        ),
       );
 
   @override
@@ -83,56 +68,50 @@ class BeIconShapeBorder extends OutlinedBorder {
       ..addRRect(RRect.fromRectAndRadius(rect, Radius.circular(radius)));
   }
 
-  Offset _getIconPosition(Rect rect) {
-    double x, y;
+  Offset _getIconPosition(Rect rect, Size iconSize) {
+    final insetRect = rect.deflate(iconInset + width);
+    final halfIconWidth = iconSize.width / 2;
+    final halfIconHeight = iconSize.height / 2;
 
     switch (alignment) {
       case BeIconAlignment.topLeft:
-        x = rect.left;
-        y = rect.top;
-        break;
+        return Offset(
+          insetRect.left + halfIconWidth,
+          insetRect.top + halfIconHeight,
+        );
       case BeIconAlignment.topCenter:
-        x = rect.center.dx;
-        y = rect.top;
-        break;
+        return Offset(insetRect.center.dx, insetRect.top + halfIconHeight);
       case BeIconAlignment.topRight:
-        x = rect.right;
-        y = rect.top;
-        break;
+        return Offset(
+          insetRect.right - halfIconWidth,
+          insetRect.top + halfIconHeight,
+        );
       case BeIconAlignment.centerLeft:
-        x = rect.left;
-        y = rect.center.dy;
-        break;
+        return Offset(insetRect.left + halfIconWidth, insetRect.center.dy);
       case BeIconAlignment.center:
-        x = rect.center.dx;
-        y = rect.center.dy;
-        break;
+        return insetRect.center;
       case BeIconAlignment.centerRight:
-        x = rect.right;
-        y = rect.center.dy;
-        break;
+        return Offset(insetRect.right - halfIconWidth, insetRect.center.dy);
       case BeIconAlignment.bottomLeft:
-        x = rect.left;
-        y = rect.bottom;
-        break;
+        return Offset(
+          insetRect.left + halfIconWidth,
+          insetRect.bottom - halfIconHeight,
+        );
       case BeIconAlignment.bottomCenter:
-        x = rect.center.dx;
-        y = rect.bottom;
-        break;
+        return Offset(insetRect.center.dx, insetRect.bottom - halfIconHeight);
       case BeIconAlignment.bottomRight:
-        x = rect.right;
-        y = rect.bottom;
-        break;
+        return Offset(
+          insetRect.right - halfIconWidth,
+          insetRect.bottom - halfIconHeight,
+        );
     }
-
-    return Offset(x, y) + offset;
   }
 
   @override
   void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
     // Draw the border
     final paint = Paint()
-      ..color = color
+      ..color = color ?? Colors.black
       ..style = PaintingStyle.stroke
       ..strokeWidth = width;
 
@@ -141,46 +120,68 @@ class BeIconShapeBorder extends OutlinedBorder {
       paint,
     );
 
+    // Prepare icon text style
+    final effectiveStyle = (iconStyle ?? const TextStyle()).copyWith(
+      color: iconStyle?.color ?? color,
+      fontSize: iconStyle?.fontSize ?? size,
+      fontFamily: icon.fontFamily,
+      package: icon.fontPackage, // Support for custom icon packages
+    );
+
     // Draw the icon
     final textPainter = TextPainter(
       text: TextSpan(
         text: String.fromCharCode(icon.codePoint),
-        style: TextStyle(
-          color: color,
-          fontSize: size,
-          fontFamily: icon.fontFamily,
-        ),
+        style: effectiveStyle,
       ),
       textDirection: TextDirection.ltr,
     )..layout();
 
-    final iconPosition = _getIconPosition(rect);
-    final textOffset = Offset(
-      iconPosition.dx - textPainter.width / 2,
-      iconPosition.dy - textPainter.height / 2,
+    final iconPosition = _getIconPosition(rect, textPainter.size) + offset;
+
+    // Ensure icon stays within bounds
+    final boundedPosition = Offset(
+      iconPosition.dx.clamp(
+        rect.left + width + iconInset,
+        rect.right - width - iconInset,
+      ),
+      iconPosition.dy.clamp(
+        rect.top + width + iconInset,
+        rect.bottom - width - iconInset,
+      ),
     );
 
-    textPainter.paint(canvas, textOffset);
+    textPainter.paint(
+      canvas,
+      Offset(
+        boundedPosition.dx - textPainter.width / 2,
+        boundedPosition.dy - textPainter.height / 2,
+      ),
+    );
   }
 
   @override
   BeIconShapeBorder copyWith({
     BorderSide? side,
-    IconData? iconData,
-    double? iconSize,
-    Color? borderColor,
-    double? roundRadius,
-    double? borderWidth,
-    BeIconAlignment? iconAlignment,
-    Offset? iconOffset,
+    IconData? icon,
+    double? size,
+    Color? color,
+    double? radius,
+    double? width,
+    BeIconAlignment? alignment,
+    Offset? offset,
+    double? iconInset,
+    TextStyle? iconStyle,
   }) =>
       BeIconShapeBorder(
-        icon: iconData ?? icon,
-        size: iconSize ?? size,
-        color: borderColor ?? color,
-        radius: roundRadius ?? radius,
-        width: borderWidth ?? width,
-        alignment: iconAlignment ?? alignment,
-        offset: iconOffset ?? offset,
+        icon: icon ?? this.icon,
+        size: size ?? this.size,
+        color: color ?? this.color,
+        radius: radius ?? this.radius,
+        width: width ?? this.width,
+        alignment: alignment ?? this.alignment,
+        offset: offset ?? this.offset,
+        iconInset: iconInset ?? this.iconInset,
+        iconStyle: iconStyle ?? this.iconStyle,
       );
 }

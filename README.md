@@ -49,6 +49,8 @@ A widget for rendering Child with offset. I'ts save time create complex widget w
 ![Screenshot-2](./screenshots/screen-shot-2.png)
 ![Screenshot-3](./screenshots/screen-shot-3.png)
 ![Screenshot-3](./screenshots/screen-shot-4.png)
+![Screenshot-3](./screenshots/screen-shot-2.png)
+![Screenshot-3](./screenshots/screen-shot-1.png)
 
 To use this package in your Flutter project, add it to your pubspec.yaml file:
 
@@ -251,8 +253,6 @@ Container(
 ---
 
 ## BeIconShapeBorder
-
-![Screenshot-3](./screenshots/screen-shot-1.png)
 
 ### Features
 
