@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, avoid_setters_without_getters, lines_longer_than_80_chars
 
 import 'dart:math';
 
@@ -11,36 +11,43 @@ import 'package:flutter/rendering.dart';
 /// [rounded] will min(size.width, size.height) / 4 inside;
 /// [offset] translate widget to offset based on [Offset] default is [Offset.zero]
 /// [position] set alignment position of badge
+
+/// Custom Flutter widget for rendering a badge on another widget
 class BeBadge extends MultiChildRenderObjectWidget {
   BeBadge({
-    super.key,
     required this.child,
+    super.key,
     this.badge,
     this.rounded = false,
     this.offset = Offset.zero,
     this.position = BeBadgePosition.topRight,
   }) : super(children: [child, badge ?? const SizedBox.shrink()]);
+
   final Widget child;
   final Widget? badge;
   final BeBadgePosition position;
   final bool rounded;
   final Offset offset;
-  @override
-  RenderObject createRenderObject(BuildContext context) => _BeBadgeRenderObject(
-        position: position,
-        rounded: rounded,
-        offset: offset,
-      );
 
   @override
-  void updateRenderObject(
-    BuildContext context,
-    _BeBadgeRenderObject renderObject,
-  ) {
+  RenderObject createRenderObject(final BuildContext context) =>
+      _BeBadgeRenderObject(position: position, rounded: rounded, offset: offset);
+
+  @override
+  void updateRenderObject(final BuildContext context, final _BeBadgeRenderObject renderObject) {
     renderObject
       ..badgePosition = position
       ..rounded = rounded
       ..offset = offset;
+  }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(EnumProperty<BeBadgePosition>('position', position))
+      ..add(DiagnosticsProperty<bool>('rounded', rounded))
+      ..add(DiagnosticsProperty<Offset>('offset', offset));
   }
 }
 
@@ -49,155 +56,127 @@ class _BeBadgeRenderObject extends RenderBox
         ContainerRenderObjectMixin<RenderBox, _BeBadgeChildParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, _BeBadgeChildParentData> {
   _BeBadgeRenderObject({
-    required BeBadgePosition position,
-    required bool rounded,
-    required Offset offset,
-  })  : _badgePosition = position,
-        _rounded = rounded,
-        _offset = offset;
+    required final BeBadgePosition position,
+    required final bool rounded,
+    required final Offset offset,
+  }) : _badgePosition = position,
+       _rounded = rounded,
+       _offset = offset;
 
   BeBadgePosition _badgePosition;
-  set badgePosition(BeBadgePosition position) {
-    _badgePosition = position;
-    markNeedsPaint();
+  set badgePosition(final BeBadgePosition position) {
+    if (_badgePosition != position) {
+      _badgePosition = position;
+      markNeedsLayout();
+    }
   }
 
   bool _rounded;
-  set rounded(bool value) {
-    _rounded = value;
-    markNeedsPaint();
+  set rounded(final bool value) {
+    if (_rounded != value) {
+      _rounded = value;
+      markNeedsLayout();
+    }
   }
 
   Offset _offset;
-  set offset(Offset value) {
-    _offset = value;
-    markNeedsPaint();
+  set offset(final Offset value) {
+    if (_offset != value) {
+      _offset = value;
+      markNeedsLayout();
+    }
   }
 
   @override
-  void setupParentData(covariant RenderObject child) {
+  void setupParentData(covariant final RenderObject child) {
     child.parentData = _BeBadgeChildParentData();
   }
 
   @override
-  bool hitTest(BoxHitTestResult result, {required Offset position}) {
-    final badgeParentData = lastChild!.parentData as _BeBadgeChildParentData;
-    final badgePosition = Offset(
-      position.dx - badgeParentData.offset.dx,
-      position.dy - badgeParentData.offset.dy,
-    );
+  bool hitTest(final BoxHitTestResult result, {required final Offset position}) {
+    // Test badge first since it's visually on top
+    final badge = lastChild!;
+    final badgeParentData = badge.parentData! as _BeBadgeChildParentData;
+    final badgeLocalPosition = position - badgeParentData.offset;
 
-    /// Check if the position is within the badge or the widget itself
-
-    if (lastChild!.size.contains(badgePosition)) {
-      if (hitTestChildren(result, position: position) ||
-          hitTestSelf(position)) {
+    if (badge.size.contains(badgeLocalPosition)) {
+      if (badge.hitTest(result, position: badgeLocalPosition)) {
         result.add(BoxHitTestEntry(this, position));
         return true;
       }
     }
 
-    if (size.contains(position)) {
-      if (hitTestChildren(result, position: position) ||
-          hitTestSelf(position)) {
+    // Then test the main child
+    final child = firstChild!;
+    final childParentData = child.parentData! as _BeBadgeChildParentData;
+    final childLocalPosition = position - childParentData.offset;
+
+    if (child.size.contains(childLocalPosition)) {
+      if (child.hitTest(result, position: childLocalPosition)) {
         result.add(BoxHitTestEntry(this, position));
         return true;
       }
     }
+
     return false;
   }
 
   @override
   void performLayout() {
-    final child = firstChild;
-    final badge = lastChild;
-    child!.layout(constraints, parentUsesSize: true);
+    final child = firstChild!;
+    final badge = lastChild!;
 
+    // Layout the main child
+    child.layout(constraints, parentUsesSize: true);
     size = child.size;
 
-    badge!.layout(
-      const BoxConstraints(),
-      parentUsesSize: true,
-    );
+    // Layout the badge with loose constraints
+    badge.layout(BoxConstraints.loose(size), parentUsesSize: true);
 
-    final badgeParentData = badge.parentData as _BeBadgeChildParentData;
+    // Calculate and set badge offset
 
-    /// Calculate the offset for the badge
-
-    final labelOffset = _getOffset(
-      badge.size.width,
-      badge.size.height,
-    );
-    badgeParentData.offset = labelOffset;
+    (badge.parentData! as _BeBadgeChildParentData).offset = _getOffset(badge.size.width, badge.size.height);
   }
 
-  @override
-  void paint(PaintingContext context, Offset offset) =>
-      defaultPaint(context, offset);
-
-  /// Calculate the offset for the badge based on its position
-  Offset _getOffset(
-    double badgeWidth,
-    double badgeHeight,
-  ) {
+  Offset _getOffset(final double badgeWidth, final double badgeHeight) {
     final radius = min(size.width, size.height) / 2;
     final roundShift = radius / 2;
-    // Use a switch statement to determine the offset based on the badge position
 
     final (double x, double y) = switch (_badgePosition) {
       BeBadgePosition.topLeft => (
-          (-badgeWidth / 2) + (_rounded ? roundShift : 0),
-          -badgeHeight / 2 + (_rounded ? roundShift / 3 : 0)
-        ),
-      BeBadgePosition.topCenter => (
-          ((size.width - badgeWidth) / 2),
-          -badgeHeight / 2
-        ),
+        (-badgeWidth / 2) + (_rounded ? roundShift : 0),
+        -badgeHeight / 2 + (_rounded ? roundShift / 3 : 0),
+      ),
+      BeBadgePosition.topCenter => ((size.width - badgeWidth) / 2, -badgeHeight / 2),
       BeBadgePosition.topRight => (
-          (size.width - badgeWidth / 2) - (_rounded ? roundShift : 0),
-          (-badgeHeight / 2) + (_rounded ? roundShift / 3 : 0)
-        ),
+        (size.width - badgeWidth / 2) - (_rounded ? roundShift : 0),
+        (-badgeHeight / 2) + (_rounded ? roundShift / 3 : 0),
+      ),
       BeBadgePosition.bottomRight => (
-          (size.width - badgeWidth / 2) - (_rounded ? roundShift : 0),
-          (size.height - badgeHeight / 2) - (_rounded ? roundShift / 3 : 0)
-        ),
-      BeBadgePosition.bottomCenter => (
-          (size.width - badgeWidth) / 2,
-          (size.height - badgeHeight / 2)
-        ),
+        (size.width - badgeWidth / 2) - (_rounded ? roundShift : 0),
+        (size.height - badgeHeight / 2) - (_rounded ? roundShift / 3 : 0),
+      ),
+      BeBadgePosition.bottomCenter => ((size.width - badgeWidth) / 2, size.height - badgeHeight / 2),
       BeBadgePosition.bottomLeft => (
-          (-badgeWidth / 2) + (_rounded ? roundShift : 0),
-          (size.height - badgeHeight / 2) - (_rounded ? roundShift / 3 : 0)
-        ),
-      BeBadgePosition.centerLeft => (
-          (-badgeWidth / 2),
-          (size.height - badgeHeight) / 2
-        ),
-      BeBadgePosition.center => (
-          (size.width - badgeWidth) / 2,
-          (size.height - badgeHeight) / 2
-        ),
-      BeBadgePosition.centerRight => (
-          (size.width - badgeWidth / 2),
-          (size.height - badgeHeight) / 2
-        ),
+        (-badgeWidth / 2) + (_rounded ? roundShift : 0),
+        (size.height - badgeHeight / 2) - (_rounded ? roundShift / 3 : 0),
+      ),
+      BeBadgePosition.centerLeft => (-badgeWidth / 2, (size.height - badgeHeight) / 2),
+      BeBadgePosition.center => ((size.width - badgeWidth) / 2, (size.height - badgeHeight) / 2),
+      BeBadgePosition.centerRight => (size.width - badgeWidth / 2, (size.height - badgeHeight) / 2),
     };
-    // Apply the calculated offset and the specified offset
 
     return Offset(x + _offset.dx, y + _offset.dy);
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) =>
-      defaultHitTestChildren(
-        result,
-        position: position,
-      );
+  void paint(final PaintingContext context, final Offset offset) {
+    defaultPaint(context, offset);
+  }
 }
 
 // Custom parent data for the BeBadge widget
-class _BeBadgeChildParentData extends ContainerBoxParentData<RenderBox>
-    with ContainerParentDataMixin<RenderBox> {}
+class _BeBadgeChildParentData extends ContainerBoxParentData<RenderBox> with ContainerParentDataMixin<RenderBox> {}
 
 /// Enumeration for different badge positions [BeBadgePosition]
 enum BeBadgePosition {

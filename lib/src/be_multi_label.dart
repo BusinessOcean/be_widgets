@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, lines_longer_than_80_chars
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -7,22 +7,14 @@ import 'package:flutter/rendering.dart';
 /// [child] of Widget Type. badge widget respects child widget dimention
 /// [labels] of Widget Type. badge widget respects child
 class BeMultiLabel extends MultiChildRenderObjectWidget {
-  BeMultiLabel({
-    super.key,
-    required this.child,
-    required this.labels,
-  }) : super(children: [child, ...labels]);
+  BeMultiLabel({required this.child, required this.labels, super.key}) : super(children: [child, ...labels]);
   final Widget child;
   final List<BeLabelChild> labels;
   @override
-  RenderObject createRenderObject(BuildContext context) =>
-      _BeMultiLabelRenderObject();
+  RenderObject createRenderObject(final BuildContext context) => _BeMultiLabelRenderObject();
 
   @override
-  void updateRenderObject(
-    BuildContext context,
-    _BeMultiLabelRenderObject renderObject,
-  ) {}
+  void updateRenderObject(final BuildContext context, final _BeMultiLabelRenderObject renderObject) {}
 }
 
 class _BeMultiLabelRenderObject extends RenderBox
@@ -32,131 +24,100 @@ class _BeMultiLabelRenderObject extends RenderBox
   _BeMultiLabelRenderObject();
 
   @override
-  void setupParentData(covariant RenderObject child) {
+  void setupParentData(covariant final RenderObject child) {
     child.parentData = _BeMultiLabelParentData();
   }
 
   @override
   void performLayout() {
-    final child = firstChild;
-    child!.layout(constraints, parentUsesSize: true);
-
+    final child = firstChild!;
+    child.layout(constraints, parentUsesSize: true);
     size = child.size;
 
-    for (final c in getChildrenAsList()) {
+    // Layout all label children
+    final children = getChildrenAsList();
+    for (final c in children) {
       if (c == firstChild) continue;
-      final badge = (c as _LabelRenderBox)
-        ..layout(
-          const BoxConstraints(),
-          parentUsesSize: true,
-        );
-      final badgeParentData = badge.parentData as _BeMultiLabelParentData;
+
+      final label = c;
+      label.layout(const BoxConstraints(), parentUsesSize: true);
+
+      final labelParentData = label.parentData! as _BeMultiLabelParentData;
+      final labelRenderBox = label as _LabelRenderBox;
       final labelOffset = _getOffset(
-        badge._position,
-        badge._offset,
-        badge.size.width,
-        badge.size.height,
+        labelRenderBox._position,
+        labelRenderBox._offset,
+        label.size.width,
+        label.size.height,
       );
-      badgeParentData.offset = labelOffset;
+      labelParentData.offset = labelOffset;
     }
   }
 
   @override
-  void paint(PaintingContext context, Offset offset) =>
-      defaultPaint(context, offset);
+  void paint(final PaintingContext context, final Offset offset) => defaultPaint(context, offset);
 
   Offset _getOffset(
-    BeMultiLabelPosition position,
-    Offset childOffset,
-    double labelWidth,
-    double labelHeight,
+    final BeMultiLabelPosition position,
+    final Offset childOffset,
+    final double labelWidth,
+    final double labelHeight,
   ) {
-    var translateX = 0.0;
-    var translateY = 0.0;
-
     final (double x, double y) = switch (position) {
       BeMultiLabelPosition.topLeft => (0, -labelHeight),
       BeMultiLabelPosition.leftTop => (-labelWidth, 0),
-      BeMultiLabelPosition.topCenter => (
-          ((size.width - labelWidth) / 2),
-          -labelHeight
-        ),
-      BeMultiLabelPosition.topRight => (
-          (size.width - labelWidth),
-          (-labelHeight)
-        ),
-      BeMultiLabelPosition.rightTop => ((size.width), 0),
-      BeMultiLabelPosition.bottomRight => (
-          (size.width - labelWidth),
-          (size.height)
-        ),
-      BeMultiLabelPosition.rightBottom => (
-          (size.width),
-          (size.height - labelHeight)
-        ),
-      BeMultiLabelPosition.rightCenter => (
-          size.width,
-          (size.height - labelHeight) / 2
-        ),
-      BeMultiLabelPosition.bottomCenter => (
-          (size.width - labelWidth) / 2,
-          size.height
-        ),
-      BeMultiLabelPosition.bottomLeft => (0, (size.height)),
-      BeMultiLabelPosition.leftBottom => (
-          -labelWidth,
-          size.height - labelHeight
-        ),
-      BeMultiLabelPosition.leftCenter => (
-          (-labelWidth),
-          (size.height - labelHeight) / 2
-        ),
-      BeMultiLabelPosition.center => (
-          (size.width - labelWidth) / 2,
-          (size.height - labelHeight) / 2
-        ),
+      BeMultiLabelPosition.topCenter => ((size.width - labelWidth) / 2, -labelHeight),
+      BeMultiLabelPosition.topRight => (size.width - labelWidth, -labelHeight),
+      BeMultiLabelPosition.rightTop => (size.width, 0),
+      BeMultiLabelPosition.bottomRight => (size.width - labelWidth, size.height),
+      BeMultiLabelPosition.rightBottom => (size.width, size.height - labelHeight),
+      BeMultiLabelPosition.rightCenter => (size.width, (size.height - labelHeight) / 2),
+      BeMultiLabelPosition.bottomCenter => ((size.width - labelWidth) / 2, size.height),
+      BeMultiLabelPosition.bottomLeft => (0, size.height),
+      BeMultiLabelPosition.leftBottom => (-labelWidth, size.height - labelHeight),
+      BeMultiLabelPosition.leftCenter => (-labelWidth, (size.height - labelHeight) / 2),
+      BeMultiLabelPosition.center => ((size.width - labelWidth) / 2, (size.height - labelHeight) / 2),
     };
-    translateX = x + childOffset.dx;
-    translateY = y + childOffset.dy;
 
-    return Offset(translateX, translateY);
+    return Offset(x + childOffset.dx, y + childOffset.dy);
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) =>
-      defaultHitTestChildren(result, position: position);
+  bool hitTest(final BoxHitTestResult result, {required final Offset position}) {
+    // Test labels first (in reverse order since later ones are visually on top)
+    final children = getChildrenAsList();
 
-  @override
-  bool hitTest(BoxHitTestResult result, {required Offset position}) {
-    for (final child in getChildrenAsList()) {
-      final badgeParentData = child.parentData as _BeMultiLabelParentData;
-      // TODO(sourav): fix hitTest for bottom
-      final badgePosition = Offset(
-        position.dx - badgeParentData.offset.dx,
-        position.dy - badgeParentData.offset.dy,
-      );
-      if (child.size.contains(badgePosition)) {
-        if (hitTestChildren(result, position: position) ||
-            hitTestSelf(position)) {
-          result.add(BoxHitTestEntry(this, position));
-          return true;
+    // Test labels from last to first (visual z-order)
+    for (var i = children.length - 1; i >= 0; i--) {
+      final child = children[i];
+      final childParentData = child.parentData! as _BeMultiLabelParentData;
+
+      if (child == firstChild) {
+        // Main child - test with its offset
+        final childLocalPosition = position - childParentData.offset;
+        if (child.size.contains(childLocalPosition)) {
+          if (child.hitTest(result, position: childLocalPosition)) {
+            result.add(BoxHitTestEntry(this, position));
+            return true;
+          }
         }
-      }
-
-      if (size.contains(position)) {
-        if (hitTestChildren(result, position: position) ||
-            hitTestSelf(position)) {
-          result.add(BoxHitTestEntry(this, position));
-          return true;
+      } else {
+        // Label children
+        final labelLocalPosition = position - childParentData.offset;
+        if (child.size.contains(labelLocalPosition)) {
+          if (child.hitTest(result, position: labelLocalPosition)) {
+            result.add(BoxHitTestEntry(this, position));
+            return true;
+          }
         }
       }
     }
+
     return false;
   }
 }
 
-class _BeMultiLabelParentData extends ContainerBoxParentData<RenderBox>
-    with ContainerParentDataMixin<RenderBox> {}
+class _BeMultiLabelParentData extends ContainerBoxParentData<RenderBox> with ContainerParentDataMixin<RenderBox> {}
 
 // ==========================================================================
 /// Custom Flutter widget for rendering a badge on another widget </br>
@@ -164,53 +125,50 @@ class _BeMultiLabelParentData extends ContainerBoxParentData<RenderBox>
 /// [offset] translate widget to offset based on [Offset] default is [Offset.zero]
 /// [position] set alignment position of badge
 class BeLabelChild extends SingleChildRenderObjectWidget {
-  const BeLabelChild({
-    super.key,
-    this.offset = Offset.zero,
-    required this.position,
-    required super.child,
-  });
+  const BeLabelChild({required this.position, required super.child, super.key, this.offset = Offset.zero});
   final BeMultiLabelPosition position;
   final Offset offset;
 
   @override
-  RenderObject createRenderObject(BuildContext context) => _LabelRenderBox(
-        offset: offset,
-        position: position,
-      );
+  RenderObject createRenderObject(final BuildContext context) => _LabelRenderBox(offset: offset, position: position);
 
   @override
-  void updateRenderObject(
-    BuildContext context,
-    _LabelRenderBox renderObject,
-  ) {
+  void updateRenderObject(final BuildContext context, final _LabelRenderBox renderObject) {
     renderObject
       ..position = position
       ..offset = offset;
   }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(EnumProperty<BeMultiLabelPosition>('position', position))
+      ..add(DiagnosticsProperty<Offset>('offset', offset));
+  }
 }
 
-class _LabelRenderBox extends RenderBox
-    with RenderObjectWithChildMixin<RenderBox> {
-  // Add any properties and constructor you need
-  _LabelRenderBox({
-    required BeMultiLabelPosition position,
-    required Offset offset,
-  })  : _position = position,
-        _offset = offset;
+class _LabelRenderBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
+  _LabelRenderBox({required final BeMultiLabelPosition position, required final Offset offset})
+    : _position = position,
+      _offset = offset;
 
   var _lastSize = Size.zero;
 
   BeMultiLabelPosition _position;
-  set position(BeMultiLabelPosition position) {
-    _position = position;
-    markNeedsPaint();
+  set position(final BeMultiLabelPosition position) {
+    if (_position != position) {
+      _position = position;
+      markNeedsLayout();
+    }
   }
 
   Offset _offset;
-  set offset(Offset value) {
-    _offset = value;
-    markNeedsPaint();
+  set offset(final Offset value) {
+    if (_offset != value) {
+      _offset = value;
+      markNeedsLayout();
+    }
   }
 
   @override
@@ -225,12 +183,11 @@ class _LabelRenderBox extends RenderBox
 
     if (_lastSize != size) {
       _lastSize = size;
-      // _widget.onChildSizeChanged?.call(_lastSize);
     }
   }
 
   @override
-  void paint(PaintingContext context, Offset offset) {
+  void paint(final PaintingContext context, final Offset offset) {
     final child = this.child;
     if (child != null) {
       context.paintChild(child, offset);
@@ -238,8 +195,17 @@ class _LabelRenderBox extends RenderBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) =>
-      child?.hitTest(result, position: position) == true;
+  bool hitTestChildren(final BoxHitTestResult result, {required final Offset position}) {
+    return child?.hitTest(result, position: position) == true;
+  }
+
+  @override
+  bool hitTest(final BoxHitTestResult result, {required final Offset position}) {
+    if (size.contains(position)) {
+      return hitTestChildren(result, position: position) || super.hitTest(result, position: position);
+    }
+    return false;
+  }
 }
 
 enum BeMultiLabelPosition {
