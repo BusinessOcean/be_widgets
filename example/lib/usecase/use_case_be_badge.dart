@@ -5,9 +5,9 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'BeBadge', path: '/', type: BeBadge)
 Widget renderBeBadgeWidget(final BuildContext context) {
-  final BeBadgePosition position =
-      context.knobs.list(label: 'Position', options: BeBadgePosition.values);
-  final icon = context.knobs.list(
+  final BeBadgePosition position = context.knobs.object
+      .dropdown(label: 'Position', options: BeBadgePosition.values);
+  final icon = context.knobs.object.dropdown(
     label: 'Icon',
     options: [
       Icons.not_accessible,

@@ -6,7 +6,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 @widgetbook.UseCase(
     name: 'BeIconShapeBorder', path: '/', type: BeIconShapeBorder)
 Widget renderBeIconShapeBorderWidget(final BuildContext context) {
-  final borderType = context.knobs.list(
+  final borderType = context.knobs.object.dropdown(
     label: 'Border Type',
     options: BeIconAlignment.values,
     labelBuilder: (value) => value.toString().split('.').last,
@@ -15,7 +15,7 @@ Widget renderBeIconShapeBorderWidget(final BuildContext context) {
       .slider(label: 'Icon Size', initialValue: 32, min: 16, max: 64);
   final borderRadius = context.knobs.double
       .slider(label: 'Border Radius', initialValue: 16, min: 0, max: 32);
-  final borderColor = context.knobs.list(
+  final borderColor = context.knobs.object.dropdown(
     label: 'Border Color',
     options: [
       Colors.blue,

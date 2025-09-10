@@ -5,7 +5,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'BeBoxShadow', path: '/', type: BeBoxShadow)
 Widget renderBeBoxShadowWidget(final BuildContext context) {
-  final shadowColor = context.knobs.list(
+  final shadowColor = context.knobs.object.dropdown(
     label: 'Shadow Color',
     options: [
       Colors.grey,

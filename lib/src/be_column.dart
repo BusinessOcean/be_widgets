@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:be_widgets/src/be_breakpoint.dart'
     show BeResponsivePoints, calculateBreakpoint, BeBreakpoint;
 import 'package:be_widgets/src/be_row.dart' show RenderBeColumn;
