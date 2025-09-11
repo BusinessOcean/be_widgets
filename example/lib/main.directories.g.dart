@@ -134,7 +134,7 @@ final directories = <_widgetbook.WidgetbookNode>[
         name: 'BeRow',
         useCase: _widgetbook.WidgetbookUseCase(
           name: 'BeRow',
-          builder: _example_usecase_use_case_be_row.renderBeRowWidget,
+          builder: _example_usecase_use_case_be_row.useCaseBeRow,
         ),
       ),
       _widgetbook.WidgetbookLeafComponent(

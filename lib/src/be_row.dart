@@ -43,7 +43,8 @@ class BeRow extends MultiChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(final BuildContext context, final _RenderBeRow renderObject) {
+  void updateRenderObject(
+      final BuildContext context, final _RenderBeRow renderObject) {
     renderObject
       ..mainAxisAlignment = mainAxisAlignment
       ..crossAxisAlignment = crossAxisAlignment
@@ -69,14 +70,14 @@ class _RenderBeRow extends RenderBox
     required final EdgeInsets padding,
     required final bool debugGrid,
     required final Color debugGridColor,
-  }) : _mainAxisAlignment = mainAxisAlignment,
-       _crossAxisAlignment = crossAxisAlignment,
-       _mainAxisSize = mainAxisSize,
-       _spacing = spacing,
-       _runSpacing = runSpacing,
-       _padding = padding,
-       _debugGrid = debugGrid,
-       _debugGridColor = debugGridColor;
+  })  : _mainAxisAlignment = mainAxisAlignment,
+        _crossAxisAlignment = crossAxisAlignment,
+        _mainAxisSize = mainAxisSize,
+        _spacing = spacing,
+        _runSpacing = runSpacing,
+        _padding = padding,
+        _debugGrid = debugGrid,
+        _debugGridColor = debugGridColor;
 
   MainAxisAlignment _mainAxisAlignment;
   CrossAxisAlignment _crossAxisAlignment;
@@ -183,7 +184,8 @@ class _RenderBeRow extends RenderBox
     double maxWidth = 0.0;
 
     for (final row in rows) {
-      final rowLayout = _layoutRow(row, columnWidth, availableHeight - currentY + padding.top);
+      final rowLayout = _layoutRow(
+          row, columnWidth, availableHeight - currentY + padding.top);
       _positionRow(row, rowLayout, currentY);
 
       currentY += rowLayout.height + _runSpacing;
@@ -195,13 +197,18 @@ class _RenderBeRow extends RenderBox
     }
 
     size = constraints.constrain(
-      Size(_mainAxisSize == MainAxisSize.max ? constraints.maxWidth : maxWidth, currentY + padding.bottom),
+      Size(_mainAxisSize == MainAxisSize.max ? constraints.maxWidth : maxWidth,
+          currentY + padding.bottom),
     );
   }
 
   Size _computeEmptySize() {
     return constraints.constrain(
-      Size(_mainAxisSize == MainAxisSize.max ? constraints.maxWidth : padding.horizontal, padding.vertical),
+      Size(
+          _mainAxisSize == MainAxisSize.max
+              ? constraints.maxWidth
+              : padding.horizontal,
+          padding.vertical),
     );
   }
 
@@ -229,7 +236,8 @@ class _RenderBeRow extends RenderBox
     int currentRowWidth = 0;
 
     for (final child in children) {
-      final columns = (child as RenderBeColumn).getColumnCount(constraints.maxWidth);
+      final columns =
+          (child as RenderBeColumn).getColumnCount(constraints.maxWidth);
 
       if (currentRowWidth + columns <= 12) {
         currentRow.add(child);
@@ -248,20 +256,26 @@ class _RenderBeRow extends RenderBox
     return rows;
   }
 
-  _RowLayout _layoutRow(final List<RenderBox> row, final double columnWidth, final double maxHeight) {
+  _RowLayout _layoutRow(final List<RenderBox> row, final double columnWidth,
+      final double maxHeight) {
     double currentX = 0.0; // Start from 0, padding will be added in positioning
     double maxHeightInRow = 0.0;
     final offsets = <Offset>[];
 
     for (int i = 0; i < row.length; i++) {
       final child = row[i];
-      final columns = (child as RenderBeColumn).getColumnCount(constraints.maxWidth);
+      final columns =
+          (child as RenderBeColumn).getColumnCount(constraints.maxWidth);
       // For a child spanning multiple columns, include the spacing that would be between those columns
       // For example: 3 columns = 3 * columnWidth + 2 * spacing (gaps between the 3 columns)
       final childWidth = (columnWidth * columns) + (_spacing * (columns - 1));
 
       child.layout(
-        BoxConstraints(minWidth: 0, maxWidth: childWidth, minHeight: 0, maxHeight: maxHeight),
+        BoxConstraints(
+            minWidth: 0,
+            maxWidth: childWidth,
+            minHeight: 0,
+            maxHeight: maxHeight),
         parentUsesSize: true,
       );
 
@@ -276,14 +290,19 @@ class _RenderBeRow extends RenderBox
       maxHeightInRow = max(maxHeightInRow, child.size.height);
     }
 
-    return _RowLayout(width: currentX + padding.horizontal, height: maxHeightInRow, offsets: offsets);
+    return _RowLayout(
+        width: currentX + padding.horizontal,
+        height: maxHeightInRow,
+        offsets: offsets);
   }
 
-  void _positionRow(final List<RenderBox> row, final _RowLayout layout, final double y) {
+  void _positionRow(
+      final List<RenderBox> row, final _RowLayout layout, final double y) {
     for (int i = 0; i < row.length; i++) {
       final child = row[i];
-
-      (child.parentData! as BeRowParentData).offset = Offset(layout.offsets[i].dx + padding.left, y);
+      final parentData = child.parentData! as BeRowParentData;
+      // Add padding.left to position correctly within the container
+      parentData.offset = Offset(layout.offsets[i].dx + padding.left, y);
     }
   }
 
@@ -298,11 +317,11 @@ class _RenderBeRow extends RenderBox
 
   void _paintDebugGrid(final PaintingContext context, final Offset offset) {
     final totalSpacingWidth = _spacing * 11; // 11 gaps between 12 columns
-    final columnWidth = (size.width - padding.horizontal - totalSpacingWidth) / 12;
-    final paint =
-        Paint()
-          ..color = _debugGridColor.withValues(alpha: 0.3)
-          ..strokeWidth = 1;
+    final columnWidth =
+        (size.width - padding.horizontal - totalSpacingWidth) / 12;
+    final paint = Paint()
+      ..color = _debugGridColor.withValues(alpha: 0.3)
+      ..strokeWidth = 1;
 
     for (int i = 0; i <= 12; i++) {
       final x = padding.left + (columnWidth * i) + (_spacing * i);
@@ -315,7 +334,8 @@ class _RenderBeRow extends RenderBox
   }
 
   @override
-  bool hitTestChildren(final BoxHitTestResult result, {required final Offset position}) {
+  bool hitTestChildren(final BoxHitTestResult result,
+      {required final Offset position}) {
     return defaultHitTestChildren(result, position: position);
   }
 
@@ -333,7 +353,8 @@ class _RenderBeRow extends RenderBox
 }
 
 class _RowLayout {
-  _RowLayout({required this.width, required this.height, required this.offsets});
+  _RowLayout(
+      {required this.width, required this.height, required this.offsets});
   final double width;
   final double height;
   final List<Offset> offsets;

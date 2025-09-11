@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-extension FlexColorExtensions on Color {
+extension ColorExtensions on Color {
   Color getRandomColor() {
     final random = math.Random();
     return Color.fromARGB(
