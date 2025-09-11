@@ -1,3 +1,8 @@
+## 1.2.1
+
+- Added demo and showcase example
+- added ui widgetbook in example and update real world showcase screen
+
 ## 1.2.0
 
 - Introduced new widgets: `be_badge.dart`, `be_multi_badge.dart`, `be_label.dart`, `be_multi_label.dart`, `be_text_more.dart`, `be_size_aware.dart`, `be_wrap.dart`, `be_row.dart`, `be_column.dart`, `be_container.dart`, `be_offset.dart`, `be_breakpoint.dart`.
