@@ -1,3 +1,109 @@
+## Example Usage
+
+Below are example code snippets for the main widgets and utilities:
+
+### BeBadge
+
+```dart
+BeBadge(
+  child: Icon(Icons.notifications),
+  badge: Text('3'),
+  position: BeBadgePosition.topRight,
+  rounded: true,
+  offset: Offset(4, 4),
+)
+```
+
+### BeLabel
+
+```dart
+BeLabel(
+  child: Icon(Icons.info),
+  label: Text('New'),
+  position: BeLabelPosition.topLeft,
+  offset: Offset(8, 0),
+)
+```
+
+### BeMultiBadge
+
+```dart
+BeMultiBadge(
+  child: Icon(Icons.shopping_cart),
+  labels: [
+    BeBadgeChild(position: BeMultiBadgePosition.topRight, badge: Text('Sale')),
+    BeBadgeChild(position: BeMultiBadgePosition.bottomLeft, badge: Text('New')),
+  ],
+)
+```
+
+### BeMultiLabel
+
+```dart
+BeMultiLabel(
+  child: Icon(Icons.person),
+  labels: [
+    BeLabelChild(position: BeMultiLabelPosition.topRight, label: Text('VIP')),
+    BeLabelChild(position: BeMultiLabelPosition.bottomLeft, label: Text('Active')),
+  ],
+)
+```
+
+### BeRow & BeColumn
+
+```dart
+BeRow(
+  spacing: 12,
+  children: [
+    BeColumn(xs: 6, child: Text('Left')),
+    BeColumn(xs: 6, child: Text('Right')),
+  ],
+)
+```
+
+### BeOffset
+
+```dart
+BeOffset(
+  offset: Offset(20, 10),
+  child: Icon(Icons.star),
+)
+```
+
+### BeBoxDecoration
+
+```dart
+Container(
+  width: 100,
+  height: 100,
+  decoration: BeBoxDecoration(
+    color: Colors.blue,
+    borderRadius: BorderRadius.circular(8),
+    boxShadow: [
+      BeBoxShadow(color: Colors.black26, blurRadius: 8, inset: true),
+    ],
+  ),
+)
+```
+
+### BeIconShapeBorder
+
+```dart
+Container(
+  width: 80,
+  height: 80,
+  decoration: ShapeDecoration(
+    shape: BeIconShapeBorder(
+      icon: Icons.check,
+      color: Colors.green,
+      radius: 12,
+      width: 2,
+      alignment: BeIconAlignment.center,
+    ),
+  ),
+)
+```
+
 <!--
 This README describes the package. If you publish this package to pub.dev,
 this README's contents appear on the landing page for your package.
@@ -15,44 +121,94 @@ and the Flutter guide for
 
 ## Overview
 
-The be_widget Flutter package provides a collection of custom Flutter widgets that enhance the user interface and offer additional features for building Flutter applications. These widgets are designed to be flexible, customizable, and easy to integrate into your Flutter projects.
+`be_widgets` is a collection of advanced, composable Flutter widgets for building beautiful, responsive, and interactive UIs. It includes layout primitives, decoration helpers, and overlay widgets for badges and labels.
 
-Widgets Included
+## Features
 
-- BeLabel Widget:
+- Responsive row/column layouts (BeRow, BeColumn)
+- Overlay badges and labels (BeBadge, BeLabel, BeMultiBadge, BeMultiLabel)
+- Custom offset and positioning (BeOffset)
+- Advanced decoration and shape borders (BeBoxDecoration, BeIconShapeBorder)
+- Dashboard playground for live widget experimentation
+- Easy integration and extensive customization
 
-A widget for rendering a label on another widget.
-Supports customization of label position, offset, and sizing.
+## Main Exports
 
-- BeBadge Widget:
+Below are the main exports provided by the package:
 
-A widget for rendering a badge on another widget.
-Allows customization of badge position, rounded corners, and offset.
+- **be_badge.dart**: BeBadge widget for overlaying badges on other widgets with customizable position and style.
+- **be_breakpoint.dart**: Utilities for responsive breakpoints, enabling adaptive layouts based on screen size.
+- **be_column.dart**: BeColumn widget for responsive column layouts, similar to Bootstrap's grid system.
+- **be_container.dart**: BeContainer widget for flexible container layouts with additional styling options.
+- **be_label.dart**: BeLabel widget for overlaying labels on other widgets with customizable position and appearance.
+- **be_multi_badge.dart**: BeMultiBadge widget for displaying multiple badges on a single widget, each with independent positioning.
+- **be_multi_label.dart**: BeMultiLabel widget for displaying multiple labels on a single widget, each with independent positioning.
+- **be_offset.dart**: BeOffset widget for offsetting child widgets without using a Stack.
+- **be_row.dart**: BeRow widget for responsive row layouts, supporting spacing, alignment, and breakpoints.
+- **be_size_aware.dart**: Utilities and widgets for size awareness and adaptive rendering.
+- **be_text_more.dart**: BeTextMore widget for expandable/collapsible text with “show more/less” functionality.
+- **be_wrap.dart**: BeWrap widget for wrapping children with responsive spacing and alignment.
+- **decoration/be_box_decoration.dart**: BeBoxDecoration for advanced box decoration, including custom shadows and interpolation.
+- **decoration/be_box_shadow.dart**: BeBoxShadow for enhanced shadow effects, including inset and outset support.
+- **decoration/be_icon_shape_border.dart**: BeIconShapeBorder for drawing icons inside custom shape borders.
 
-- BeMultiBadge Widget:
+## Playground & Usage Example
 
-A widget for rendering multiple badges on a single widget.
-Provides flexibility in positioning and styling individual badges.
+Try the interactive dashboard playground in `example/lib/usecase/use_case_be_row.dart` to experiment with BeRow layouts, card content, and responsive previews:
 
-- BeMultiLabel Widget:
+```dart
+BeRow(
+  spacing: 16,
+  runSpacing: 8,
+  mainAxisAlignment: MainAxisAlignment.start,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  mainAxisSize: MainAxisSize.max,
+  padding: EdgeInsets.all(8),
+  debugGrid: false,
+  children: [
+    BeColumn(
+      xs: 12, sm: 6, lg: 3,
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Icon(Icons.people, color: Colors.blue),
+              Text('Users'),
+              Text('12.5K'),
+            ],
+          ),
+        ),
+      ),
+    ),
+    // Add more BeColumn cards...
+  ],
+)
+```
 
-A widget for rendering multiple labels on a single widget.
-Supports customization of label positions, offsets, and styling.
-Usage
+### Dashboard Playground Instructions
 
-- BeOffset Widget:
+- Open the playground in Widgetbook or your app.
+- Use knobs to adjust:
+  - Number of cards
+  - Card titles, values, icons, colors
+  - Row/column spacing, alignment, padding
+  - Preview mode (Desktop/Mobile)
+- Instantly see layout changes and responsiveness.
 
-A widget for rendering Child with offset. I'ts save time create complex widget without `Stack`
+---
 
-## Screenshot
+## Screenshots
 
-![Screenshot-2](./screenshots/screen-shot-2.png)
-![Screenshot-3](./screenshots/screen-shot-3.png)
-![Screenshot-3](./screenshots/screen-shot-4.png)
-![Screenshot-3](./screenshots/screen-shot-2.png)
-![Screenshot-3](./screenshots/screen-shot-1.png)
+![Dashboard Playground](./screenshots/screen-shot-1.png)
+![Badges & Labels](./screenshots/screen-shot-2.png)
+![Decorations](./screenshots/screen-shot-3.png)
+![MultiBadge](./screenshots/screen-shot-4.png)
+![BoxDecoration](./screenshots/screen-shot-5.png)
 
-To use this package in your Flutter project, add it to your pubspec.yaml file:
+## Getting Started
+
+Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
@@ -65,13 +221,13 @@ Then, run:
 flutter pub get
 ```
 
-Import the desired widgets in your Dart code:
+Import in your Dart code:
 
 ```dart
-import 'package:be_widget/be_widget.dart';
+import 'package:be_widgets/be_widgets.dart';
 ```
 
-Now, you can use the custom widgets provided by the be_widget package in your Flutter application.
+Now you can use all widgets in your Flutter app!
 
 Contribution and Issues
 If you encounter any issues or would like to contribute to the be_widget package, feel free to visit the GitHub repository: be_widget on GitHub
