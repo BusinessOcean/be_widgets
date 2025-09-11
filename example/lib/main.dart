@@ -17,6 +17,7 @@ class WidgetbookApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Widgetbook.material(
+      themeMode: ThemeMode.light,
       // The [directories] variable does not exist yet,
       // it will be generated in the next step
       directories: directories,
