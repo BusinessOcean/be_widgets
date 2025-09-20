@@ -31,6 +31,7 @@ Widget renderBeLabelWidget(final BuildContext context) {
             childSized: childSized,
             innerLabel: innerLabel,
             label: Container(
+              width: childSized ? double.infinity : null,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.red,
