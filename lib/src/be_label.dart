@@ -27,10 +27,15 @@ class BeLabel extends MultiChildRenderObjectWidget {
   final bool innerLabel;
   @override
   RenderObject createRenderObject(final BuildContext context) =>
-      _BeLabelRenderObject(position: position, offset: offset, childSized: childSized, innerLabel: innerLabel);
+      _BeLabelRenderObject(
+          position: position,
+          offset: offset,
+          childSized: childSized,
+          innerLabel: innerLabel);
 
   @override
-  void updateRenderObject(final BuildContext context, final _BeLabelRenderObject renderObject) {
+  void updateRenderObject(
+      final BuildContext context, final _BeLabelRenderObject renderObject) {
     renderObject
       ..position = position
       ..offset = offset
@@ -58,10 +63,10 @@ class _BeLabelRenderObject extends RenderBox
     required final Offset offset,
     required final bool childSized,
     required final bool innerLabel,
-  }) : _position = position,
-       _childSized = childSized,
-       _offset = offset,
-       _innerLabel = innerLabel;
+  })  : _position = position,
+        _childSized = childSized,
+        _offset = offset,
+        _innerLabel = innerLabel;
 
   BeLabelPosition _position;
   set position(final BeLabelPosition position) {
@@ -101,7 +106,8 @@ class _BeLabelRenderObject extends RenderBox
   }
 
   @override
-  bool hitTest(final BoxHitTestResult result, {required final Offset position}) {
+  bool hitTest(final BoxHitTestResult result,
+      {required final Offset position}) {
     // Test label first since it's visually on top
     final label = lastChild!;
     final labelParentData = label.parentData! as _BeLabelChildParentData;
@@ -147,10 +153,9 @@ class _BeLabelRenderObject extends RenderBox
 
     // Calculate and set label offset
     final labelParentData = label.parentData! as _BeLabelChildParentData;
-    final labelOffset =
-        _innerLabel
-            ? _getInnerLabelOffset(label.size.width, label.size.height)
-            : _getOffset(label.size.width, label.size.height);
+    final labelOffset = _innerLabel
+        ? _getInnerLabelOffset(label.size.width, label.size.height)
+        : _getOffset(label.size.width, label.size.height);
     labelParentData.offset = labelOffset;
   }
 
@@ -163,44 +168,76 @@ class _BeLabelRenderObject extends RenderBox
     final (double x, double y) = switch (_position) {
       BeLabelPosition.topLeft => (0, -labelHeight),
       BeLabelPosition.leftTop => (-labelWidth, 0),
-      BeLabelPosition.topCenter => ((size.width - labelWidth) / 2, -labelHeight),
+      BeLabelPosition.topCenter => (
+          (size.width - labelWidth) / 2,
+          -labelHeight
+        ),
       BeLabelPosition.topRight => (size.width - labelWidth, -labelHeight),
       BeLabelPosition.rightTop => (size.width, 0),
       BeLabelPosition.bottomRight => (size.width - labelWidth, size.height),
       BeLabelPosition.rightBottom => (size.width, size.height - labelHeight),
-      BeLabelPosition.rightCenter => (size.width, (size.height - labelHeight) / 2),
-      BeLabelPosition.bottomCenter => ((size.width - labelWidth) / 2, size.height),
+      BeLabelPosition.rightCenter => (
+          size.width,
+          (size.height - labelHeight) / 2
+        ),
+      BeLabelPosition.bottomCenter => (
+          (size.width - labelWidth) / 2,
+          size.height
+        ),
       BeLabelPosition.bottomLeft => (0, size.height),
       BeLabelPosition.leftBottom => (-labelWidth, size.height - labelHeight),
-      BeLabelPosition.leftCenter => (-labelWidth, (size.height - labelHeight) / 2),
-      BeLabelPosition.center => ((size.width - labelWidth) / 2, (size.height - labelHeight) / 2),
+      BeLabelPosition.leftCenter => (
+          -labelWidth,
+          (size.height - labelHeight) / 2
+        ),
+      BeLabelPosition.center => (
+          (size.width - labelWidth) / 2,
+          (size.height - labelHeight) / 2
+        ),
     };
 
     return Offset(x + _offset.dx, y + _offset.dy);
   }
 
-  Offset _getInnerLabelOffset(final double labelWidth, final double labelHeight) {
+  Offset _getInnerLabelOffset(
+      final double labelWidth, final double labelHeight) {
     final (double x, double y) = switch (_position) {
       BeLabelPosition.topLeft => (0, 0),
       BeLabelPosition.leftTop => (0, 0),
       BeLabelPosition.topCenter => ((size.width - labelWidth) / 2, 0),
       BeLabelPosition.topRight => (size.width - labelWidth, 0),
       BeLabelPosition.rightTop => (size.width - labelWidth, 0),
-      BeLabelPosition.bottomRight => (size.width - labelWidth, size.height - labelHeight),
-      BeLabelPosition.rightBottom => (size.width - labelWidth, size.height - labelHeight),
-      BeLabelPosition.rightCenter => (size.width - labelWidth, (size.height - labelHeight) / 2),
-      BeLabelPosition.bottomCenter => ((size.width - labelWidth) / 2, size.height - labelHeight),
+      BeLabelPosition.bottomRight => (
+          size.width - labelWidth,
+          size.height - labelHeight
+        ),
+      BeLabelPosition.rightBottom => (
+          size.width - labelWidth,
+          size.height - labelHeight
+        ),
+      BeLabelPosition.rightCenter => (
+          size.width - labelWidth,
+          (size.height - labelHeight) / 2
+        ),
+      BeLabelPosition.bottomCenter => (
+          (size.width - labelWidth) / 2,
+          size.height - labelHeight
+        ),
       BeLabelPosition.bottomLeft => (0, size.height - labelHeight),
       BeLabelPosition.leftBottom => (0, size.height - labelHeight),
       BeLabelPosition.leftCenter => (0, (size.height - labelHeight) / 2),
-      BeLabelPosition.center => ((size.width - labelWidth) / 2, (size.height - labelHeight) / 2),
+      BeLabelPosition.center => (
+          (size.width - labelWidth) / 2,
+          (size.height - labelHeight) / 2
+        ),
     };
 
     return Offset(x + _offset.dx, y + _offset.dy);
   }
 }
 
-class _BeLabelChildParentData extends ContainerBoxParentData<RenderBox> with ContainerParentDataMixin<RenderBox> {}
+class _BeLabelChildParentData extends ContainerBoxParentData<RenderBox>
+    with ContainerParentDataMixin<RenderBox> {}
 
 /// Enumeration for different badge positions [BeLabelPosition]
 enum BeLabelPosition {

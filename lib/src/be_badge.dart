@@ -31,10 +31,12 @@ class BeBadge extends MultiChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(final BuildContext context) =>
-      _BeBadgeRenderObject(position: position, rounded: rounded, offset: offset);
+      _BeBadgeRenderObject(
+          position: position, rounded: rounded, offset: offset);
 
   @override
-  void updateRenderObject(final BuildContext context, final _BeBadgeRenderObject renderObject) {
+  void updateRenderObject(
+      final BuildContext context, final _BeBadgeRenderObject renderObject) {
     renderObject
       ..badgePosition = position
       ..rounded = rounded
@@ -59,9 +61,9 @@ class _BeBadgeRenderObject extends RenderBox
     required final BeBadgePosition position,
     required final bool rounded,
     required final Offset offset,
-  }) : _badgePosition = position,
-       _rounded = rounded,
-       _offset = offset;
+  })  : _badgePosition = position,
+        _rounded = rounded,
+        _offset = offset;
 
   BeBadgePosition _badgePosition;
   set badgePosition(final BeBadgePosition position) {
@@ -93,7 +95,8 @@ class _BeBadgeRenderObject extends RenderBox
   }
 
   @override
-  bool hitTest(final BoxHitTestResult result, {required final Offset position}) {
+  bool hitTest(final BoxHitTestResult result,
+      {required final Offset position}) {
     // Test badge first since it's visually on top
     final badge = lastChild!;
     final badgeParentData = badge.parentData! as _BeBadgeChildParentData;
@@ -135,7 +138,8 @@ class _BeBadgeRenderObject extends RenderBox
 
     // Calculate and set badge offset
 
-    (badge.parentData! as _BeBadgeChildParentData).offset = _getOffset(badge.size.width, badge.size.height);
+    (badge.parentData! as _BeBadgeChildParentData).offset =
+        _getOffset(badge.size.width, badge.size.height);
   }
 
   Offset _getOffset(final double badgeWidth, final double badgeHeight) {
@@ -144,26 +148,41 @@ class _BeBadgeRenderObject extends RenderBox
 
     final (double x, double y) = switch (_badgePosition) {
       BeBadgePosition.topLeft => (
-        (-badgeWidth / 2) + (_rounded ? roundShift : 0),
-        -badgeHeight / 2 + (_rounded ? roundShift / 3 : 0),
-      ),
-      BeBadgePosition.topCenter => ((size.width - badgeWidth) / 2, -badgeHeight / 2),
+          (-badgeWidth / 2) + (_rounded ? roundShift : 0),
+          -badgeHeight / 2 + (_rounded ? roundShift / 3 : 0),
+        ),
+      BeBadgePosition.topCenter => (
+          (size.width - badgeWidth) / 2,
+          -badgeHeight / 2
+        ),
       BeBadgePosition.topRight => (
-        (size.width - badgeWidth / 2) - (_rounded ? roundShift : 0),
-        (-badgeHeight / 2) + (_rounded ? roundShift / 3 : 0),
-      ),
+          (size.width - badgeWidth / 2) - (_rounded ? roundShift : 0),
+          (-badgeHeight / 2) + (_rounded ? roundShift / 3 : 0),
+        ),
       BeBadgePosition.bottomRight => (
-        (size.width - badgeWidth / 2) - (_rounded ? roundShift : 0),
-        (size.height - badgeHeight / 2) - (_rounded ? roundShift / 3 : 0),
-      ),
-      BeBadgePosition.bottomCenter => ((size.width - badgeWidth) / 2, size.height - badgeHeight / 2),
+          (size.width - badgeWidth / 2) - (_rounded ? roundShift : 0),
+          (size.height - badgeHeight / 2) - (_rounded ? roundShift / 3 : 0),
+        ),
+      BeBadgePosition.bottomCenter => (
+          (size.width - badgeWidth) / 2,
+          size.height - badgeHeight / 2
+        ),
       BeBadgePosition.bottomLeft => (
-        (-badgeWidth / 2) + (_rounded ? roundShift : 0),
-        (size.height - badgeHeight / 2) - (_rounded ? roundShift / 3 : 0),
-      ),
-      BeBadgePosition.centerLeft => (-badgeWidth / 2, (size.height - badgeHeight) / 2),
-      BeBadgePosition.center => ((size.width - badgeWidth) / 2, (size.height - badgeHeight) / 2),
-      BeBadgePosition.centerRight => (size.width - badgeWidth / 2, (size.height - badgeHeight) / 2),
+          (-badgeWidth / 2) + (_rounded ? roundShift : 0),
+          (size.height - badgeHeight / 2) - (_rounded ? roundShift / 3 : 0),
+        ),
+      BeBadgePosition.centerLeft => (
+          -badgeWidth / 2,
+          (size.height - badgeHeight) / 2
+        ),
+      BeBadgePosition.center => (
+          (size.width - badgeWidth) / 2,
+          (size.height - badgeHeight) / 2
+        ),
+      BeBadgePosition.centerRight => (
+          size.width - badgeWidth / 2,
+          (size.height - badgeHeight) / 2
+        ),
     };
 
     return Offset(x + _offset.dx, y + _offset.dy);
@@ -176,7 +195,8 @@ class _BeBadgeRenderObject extends RenderBox
 }
 
 // Custom parent data for the BeBadge widget
-class _BeBadgeChildParentData extends ContainerBoxParentData<RenderBox> with ContainerParentDataMixin<RenderBox> {}
+class _BeBadgeChildParentData extends ContainerBoxParentData<RenderBox>
+    with ContainerParentDataMixin<RenderBox> {}
 
 /// Enumeration for different badge positions [BeBadgePosition]
 enum BeBadgePosition {

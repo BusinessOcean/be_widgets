@@ -7,14 +7,17 @@ import 'package:flutter/rendering.dart';
 /// [child] of Widget Type. badge widget respects child widget dimention
 /// [labels] of Widget Type. badge widget respects child
 class BeMultiLabel extends MultiChildRenderObjectWidget {
-  BeMultiLabel({required this.child, required this.labels, super.key}) : super(children: [child, ...labels]);
+  BeMultiLabel({required this.child, required this.labels, super.key})
+      : super(children: [child, ...labels]);
   final Widget child;
   final List<BeLabelChild> labels;
   @override
-  RenderObject createRenderObject(final BuildContext context) => _BeMultiLabelRenderObject();
+  RenderObject createRenderObject(final BuildContext context) =>
+      _BeMultiLabelRenderObject();
 
   @override
-  void updateRenderObject(final BuildContext context, final _BeMultiLabelRenderObject renderObject) {}
+  void updateRenderObject(final BuildContext context,
+      final _BeMultiLabelRenderObject renderObject) {}
 }
 
 class _BeMultiLabelRenderObject extends RenderBox
@@ -55,7 +58,8 @@ class _BeMultiLabelRenderObject extends RenderBox
   }
 
   @override
-  void paint(final PaintingContext context, final Offset offset) => defaultPaint(context, offset);
+  void paint(final PaintingContext context, final Offset offset) =>
+      defaultPaint(context, offset);
 
   Offset _getOffset(
     final BeMultiLabelPosition position,
@@ -66,24 +70,49 @@ class _BeMultiLabelRenderObject extends RenderBox
     final (double x, double y) = switch (position) {
       BeMultiLabelPosition.topLeft => (0, -labelHeight),
       BeMultiLabelPosition.leftTop => (-labelWidth, 0),
-      BeMultiLabelPosition.topCenter => ((size.width - labelWidth) / 2, -labelHeight),
+      BeMultiLabelPosition.topCenter => (
+          (size.width - labelWidth) / 2,
+          -labelHeight
+        ),
       BeMultiLabelPosition.topRight => (size.width - labelWidth, -labelHeight),
       BeMultiLabelPosition.rightTop => (size.width, 0),
-      BeMultiLabelPosition.bottomRight => (size.width - labelWidth, size.height),
-      BeMultiLabelPosition.rightBottom => (size.width, size.height - labelHeight),
-      BeMultiLabelPosition.rightCenter => (size.width, (size.height - labelHeight) / 2),
-      BeMultiLabelPosition.bottomCenter => ((size.width - labelWidth) / 2, size.height),
+      BeMultiLabelPosition.bottomRight => (
+          size.width - labelWidth,
+          size.height
+        ),
+      BeMultiLabelPosition.rightBottom => (
+          size.width,
+          size.height - labelHeight
+        ),
+      BeMultiLabelPosition.rightCenter => (
+          size.width,
+          (size.height - labelHeight) / 2
+        ),
+      BeMultiLabelPosition.bottomCenter => (
+          (size.width - labelWidth) / 2,
+          size.height
+        ),
       BeMultiLabelPosition.bottomLeft => (0, size.height),
-      BeMultiLabelPosition.leftBottom => (-labelWidth, size.height - labelHeight),
-      BeMultiLabelPosition.leftCenter => (-labelWidth, (size.height - labelHeight) / 2),
-      BeMultiLabelPosition.center => ((size.width - labelWidth) / 2, (size.height - labelHeight) / 2),
+      BeMultiLabelPosition.leftBottom => (
+          -labelWidth,
+          size.height - labelHeight
+        ),
+      BeMultiLabelPosition.leftCenter => (
+          -labelWidth,
+          (size.height - labelHeight) / 2
+        ),
+      BeMultiLabelPosition.center => (
+          (size.width - labelWidth) / 2,
+          (size.height - labelHeight) / 2
+        ),
     };
 
     return Offset(x + childOffset.dx, y + childOffset.dy);
   }
 
   @override
-  bool hitTest(final BoxHitTestResult result, {required final Offset position}) {
+  bool hitTest(final BoxHitTestResult result,
+      {required final Offset position}) {
     // Test labels first (in reverse order since later ones are visually on top)
     final children = getChildrenAsList();
 
@@ -117,7 +146,8 @@ class _BeMultiLabelRenderObject extends RenderBox
   }
 }
 
-class _BeMultiLabelParentData extends ContainerBoxParentData<RenderBox> with ContainerParentDataMixin<RenderBox> {}
+class _BeMultiLabelParentData extends ContainerBoxParentData<RenderBox>
+    with ContainerParentDataMixin<RenderBox> {}
 
 // ==========================================================================
 /// Custom Flutter widget for rendering a badge on another widget </br>
@@ -125,15 +155,21 @@ class _BeMultiLabelParentData extends ContainerBoxParentData<RenderBox> with Con
 /// [offset] translate widget to offset based on [Offset] default is [Offset.zero]
 /// [position] set alignment position of badge
 class BeLabelChild extends SingleChildRenderObjectWidget {
-  const BeLabelChild({required this.position, required super.child, super.key, this.offset = Offset.zero});
+  const BeLabelChild(
+      {required this.position,
+      required super.child,
+      super.key,
+      this.offset = Offset.zero});
   final BeMultiLabelPosition position;
   final Offset offset;
 
   @override
-  RenderObject createRenderObject(final BuildContext context) => _LabelRenderBox(offset: offset, position: position);
+  RenderObject createRenderObject(final BuildContext context) =>
+      _LabelRenderBox(offset: offset, position: position);
 
   @override
-  void updateRenderObject(final BuildContext context, final _LabelRenderBox renderObject) {
+  void updateRenderObject(
+      final BuildContext context, final _LabelRenderBox renderObject) {
     renderObject
       ..position = position
       ..offset = offset;
@@ -148,10 +184,13 @@ class BeLabelChild extends SingleChildRenderObjectWidget {
   }
 }
 
-class _LabelRenderBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
-  _LabelRenderBox({required final BeMultiLabelPosition position, required final Offset offset})
-    : _position = position,
-      _offset = offset;
+class _LabelRenderBox extends RenderBox
+    with RenderObjectWithChildMixin<RenderBox> {
+  _LabelRenderBox(
+      {required final BeMultiLabelPosition position,
+      required final Offset offset})
+      : _position = position,
+        _offset = offset;
 
   var _lastSize = Size.zero;
 
@@ -195,14 +234,17 @@ class _LabelRenderBox extends RenderBox with RenderObjectWithChildMixin<RenderBo
   }
 
   @override
-  bool hitTestChildren(final BoxHitTestResult result, {required final Offset position}) {
+  bool hitTestChildren(final BoxHitTestResult result,
+      {required final Offset position}) {
     return child?.hitTest(result, position: position) == true;
   }
 
   @override
-  bool hitTest(final BoxHitTestResult result, {required final Offset position}) {
+  bool hitTest(final BoxHitTestResult result,
+      {required final Offset position}) {
     if (size.contains(position)) {
-      return hitTestChildren(result, position: position) || super.hitTest(result, position: position);
+      return hitTestChildren(result, position: position) ||
+          super.hitTest(result, position: position);
     }
     return false;
   }

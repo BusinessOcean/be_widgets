@@ -64,8 +64,10 @@ class BeSizeAware extends StatefulWidget {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty<BoxConstraints?>('constraints', constraints))
-      ..add(DiagnosticsProperty<bool>('hasOnSizeChanged', onSizeChanged != null))
-      ..add(DiagnosticsProperty<Duration>('debounceDuration', debounceDuration));
+      ..add(
+          DiagnosticsProperty<bool>('hasOnSizeChanged', onSizeChanged != null))
+      ..add(
+          DiagnosticsProperty<Duration>('debounceDuration', debounceDuration));
   }
 }
 
@@ -100,16 +102,20 @@ class BeSizeAwareData {
   double get maxDimension => size.longestSide;
 
   /// Calculate a responsive value based on available width
-  double responsiveWidth(final double percentage) => width * percentage.clamp(0.0, 1.0);
+  double responsiveWidth(final double percentage) =>
+      width * percentage.clamp(0.0, 1.0);
 
   /// Calculate a responsive value based on available height
-  double responsiveHeight(final double percentage) => height * percentage.clamp(0.0, 1.0);
+  double responsiveHeight(final double percentage) =>
+      height * percentage.clamp(0.0, 1.0);
 
   /// Calculate a responsive value based on the smaller dimension
-  double responsiveMin(final double percentage) => minDimension * percentage.clamp(0.0, 1.0);
+  double responsiveMin(final double percentage) =>
+      minDimension * percentage.clamp(0.0, 1.0);
 
   /// Calculate a responsive value based on the larger dimension
-  double responsiveMax(final double percentage) => maxDimension * percentage.clamp(0.0, 1.0);
+  double responsiveMax(final double percentage) =>
+      maxDimension * percentage.clamp(0.0, 1.0);
 
   /// Check if the available width is greater than a threshold
   bool isWiderThan(final double threshold) => width > threshold;
@@ -131,12 +137,17 @@ class _BeSizeAwareState extends State<BeSizeAware> {
     return LayoutBuilder(
       builder: (final context, final constraints) {
         // Use custom constraints if provided, otherwise use parent constraints
-        final effectiveConstraints = widget.constraints?.enforce(constraints) ?? constraints;
+        final effectiveConstraints =
+            widget.constraints?.enforce(constraints) ?? constraints;
 
         // Calculate the available size based on constraints
         final availableSize = Size(
-          effectiveConstraints.maxWidth.isFinite ? effectiveConstraints.maxWidth : 0,
-          effectiveConstraints.maxHeight.isFinite ? effectiveConstraints.maxHeight : 0,
+          effectiveConstraints.maxWidth.isFinite
+              ? effectiveConstraints.maxWidth
+              : 0,
+          effectiveConstraints.maxHeight.isFinite
+              ? effectiveConstraints.maxHeight
+              : 0,
         );
 
         // Check if size has changed and notify if callback is provided
@@ -157,7 +168,8 @@ class _BeSizeAwareState extends State<BeSizeAware> {
     final now = DateTime.now();
 
     // Debounce size change events
-    if (_lastSizeChange == null || now.difference(_lastSizeChange!) >= widget.debounceDuration) {
+    if (_lastSizeChange == null ||
+        now.difference(_lastSizeChange!) >= widget.debounceDuration) {
       _lastSizeChange = now;
 
       // Schedule the callback to be called after the build
@@ -191,14 +203,16 @@ class BeSizeAwareRender extends SingleChildRenderObjectWidget {
   final Duration debounceDuration;
 
   @override
-  RenderObject createRenderObject(final BuildContext context) => _BeSizeAwareRenderObject(
-    onSizeAvailable: onSizeAvailable,
-    customConstraints: constraints,
-    debounceDuration: debounceDuration,
-  );
+  RenderObject createRenderObject(final BuildContext context) =>
+      _BeSizeAwareRenderObject(
+        onSizeAvailable: onSizeAvailable,
+        customConstraints: constraints,
+        debounceDuration: debounceDuration,
+      );
 
   @override
-  void updateRenderObject(final BuildContext context, final _BeSizeAwareRenderObject renderObject) {
+  void updateRenderObject(
+      final BuildContext context, final _BeSizeAwareRenderObject renderObject) {
     renderObject
       ..onSizeAvailable = onSizeAvailable
       ..customConstraints = constraints
@@ -210,19 +224,22 @@ class BeSizeAwareRender extends SingleChildRenderObjectWidget {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty<BoxConstraints?>('constraints', constraints))
-      ..add(DiagnosticsProperty<bool>('hasOnSizeAvailable', onSizeAvailable != null))
-      ..add(DiagnosticsProperty<Duration>('debounceDuration', debounceDuration));
+      ..add(DiagnosticsProperty<bool>(
+          'hasOnSizeAvailable', onSizeAvailable != null))
+      ..add(
+          DiagnosticsProperty<Duration>('debounceDuration', debounceDuration));
   }
 }
 
-class _BeSizeAwareRenderObject extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
+class _BeSizeAwareRenderObject extends RenderBox
+    with RenderObjectWithChildMixin<RenderBox> {
   _BeSizeAwareRenderObject({
     final void Function(Size size)? onSizeAvailable,
     final BoxConstraints? customConstraints,
     final Duration debounceDuration = const Duration(milliseconds: 16),
-  }) : _onSizeAvailable = onSizeAvailable,
-       _customConstraints = customConstraints,
-       _debounceDuration = debounceDuration;
+  })  : _onSizeAvailable = onSizeAvailable,
+        _customConstraints = customConstraints,
+        _debounceDuration = debounceDuration;
 
   void Function(Size size)? _onSizeAvailable;
   set onSizeAvailable(final void Function(Size size)? value) {
@@ -248,12 +265,17 @@ class _BeSizeAwareRenderObject extends RenderBox with RenderObjectWithChildMixin
   @override
   void performLayout() {
     // Use custom constraints if provided, otherwise use parent constraints
-    final effectiveConstraints = _customConstraints?.enforce(constraints) ?? constraints;
+    final effectiveConstraints =
+        _customConstraints?.enforce(constraints) ?? constraints;
 
     // Calculate the available size
     final availableSize = Size(
-      effectiveConstraints.maxWidth.isFinite ? effectiveConstraints.maxWidth : 0,
-      effectiveConstraints.maxHeight.isFinite ? effectiveConstraints.maxHeight : 0,
+      effectiveConstraints.maxWidth.isFinite
+          ? effectiveConstraints.maxWidth
+          : 0,
+      effectiveConstraints.maxHeight.isFinite
+          ? effectiveConstraints.maxHeight
+          : 0,
     );
 
     // Notify about the available size with debouncing
@@ -273,7 +295,8 @@ class _BeSizeAwareRenderObject extends RenderBox with RenderObjectWithChildMixin
 
     // Check if size has changed significantly and debounce period has passed
     if ((_lastNotifiedSize == null || _lastNotifiedSize != availableSize) &&
-        (_lastSizeNotification == null || now.difference(_lastSizeNotification!) >= _debounceDuration)) {
+        (_lastSizeNotification == null ||
+            now.difference(_lastSizeNotification!) >= _debounceDuration)) {
       _lastSizeNotification = now;
       _lastNotifiedSize = availableSize;
       _onSizeAvailable?.call(availableSize);
@@ -288,7 +311,8 @@ class _BeSizeAwareRenderObject extends RenderBox with RenderObjectWithChildMixin
   }
 
   @override
-  bool hitTestChildren(final BoxHitTestResult result, {required final Offset position}) {
+  bool hitTestChildren(final BoxHitTestResult result,
+      {required final Offset position}) {
     if (child != null) {
       return child!.hitTest(result, position: position);
     }
@@ -299,8 +323,10 @@ class _BeSizeAwareRenderObject extends RenderBox with RenderObjectWithChildMixin
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<BoxConstraints?>('customConstraints', _customConstraints))
-      ..add(DiagnosticsProperty<Duration>('debounceDuration', _debounceDuration));
+      ..add(DiagnosticsProperty<BoxConstraints?>(
+          'customConstraints', _customConstraints))
+      ..add(
+          DiagnosticsProperty<Duration>('debounceDuration', _debounceDuration));
   }
 }
 

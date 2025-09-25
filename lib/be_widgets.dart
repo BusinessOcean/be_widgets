@@ -16,7 +16,6 @@ export 'src/decoration/be_box_decoration.dart';
 export 'src/decoration/be_box_shadow.dart';
 export 'src/decoration/be_icon_shape_border.dart';
 
-
 // Planned widgets to be added later:
 // export 'src/be_button.dart';
 // export 'src/be_icon_button.dart';
@@ -78,4 +77,4 @@ export 'src/decoration/be_icon_shape_border.dart';
 // export 'src/be_tooltip_positioned.dart';
 // export 'src/be_tooltip_positioned_container.dart';
 // export 'src/be_responsive_util.dart';
-// 
+//
