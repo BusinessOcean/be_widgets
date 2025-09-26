@@ -1,3 +1,26 @@
+<<<<<<< HEAD
+=======
+## Showcase
+
+Below are some visual showcases of the widgets in action:
+
+<p align="center">
+  <img src="example/showcase/Screencastfrom2025-09-1120-58-55-ezgif.com-video-to-gif-converter.gif" width="400" />
+  <img src="example/showcase/Screencast%20from%202025-09-11%2021-00-15.gif" width="400" />
+  <img src="example/showcase/Screencast%20from%202025-09-11%2021-01-06.gif" width="400" />
+  <img src="example/showcase/Screencast%20from%202025-09-11%2021-02-05.gif" width="400" />
+  <img src="example/showcase/Screencast%20from%202025-09-11%2021-02-36.gif" width="400" />
+  <img src="example/showcase/Screencast%20from%202025-09-11%2021-03-22.gif" width="400" />
+  <img src="example/showcase/Screencast%20from%202025-09-11%2021-04-03.gif" width="400" />
+  <img src="example/showcase/Screencast%20from%202025-09-11%2021-04-25.gif" width="400" />
+  <img src="example/showcase/Screencast%20from%202025-09-11%2021-04-48.gif" width="400" />
+  <img src="example/showcase/Screencast%20from%202025-09-11%2021-05-45.gif" width="400" />
+  <img src="example/showcase/Screencast%20from%202025-09-11%2021-06-21.gif" width="400" />
+  <img src="example/showcase/Screencastfrom2025-09-1120-58-11-ezgif.com-video-to-gif-converter.gif" width="400" />
+
+</p>
+
+>>>>>>> upstream/main
 ## Example Usage
 
 Below are example code snippets for the main widgets and utilities:
