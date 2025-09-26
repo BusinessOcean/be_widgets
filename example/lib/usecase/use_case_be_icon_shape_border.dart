@@ -34,6 +34,11 @@ Widget renderBeIconShapeBorderWidget(final BuildContext context) {
     },
   );
 
+  final childSized =
+      context.knobs.boolean(label: 'Static Example', initialValue: false);
+
+  if (childSized) return const BeIconShapeBorderUseCase();
+
   return Center(
     child: Container(
       width: 120,
@@ -49,7 +54,79 @@ Widget renderBeIconShapeBorderWidget(final BuildContext context) {
           width: 3.0,
         ),
       ),
-      child: Icon(Icons.star, color: Colors.blue, size: iconSize),
+      child: Icon(Icons.star, color: Colors.red, size: iconSize),
     ),
   );
+}
+
+class BeIconShapeBorderUseCase extends StatelessWidget {
+  const BeIconShapeBorderUseCase({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('BeIconShapeBorder Use Case'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Example 1: Success Icon with Green Border
+            Container(
+              width: 100,
+              height: 100,
+              decoration: const ShapeDecoration(
+                shape: BeIconShapeBorder(
+                  icon: Icons.check,
+                  color: Colors.green,
+                  radius: 12,
+                  width: 3,
+                  alignment: BeIconAlignment.center,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Example 2: Warning Icon with Orange Border
+            Container(
+              width: 100,
+              height: 100,
+              decoration: const ShapeDecoration(
+                shape: BeIconShapeBorder(
+                  icon: Icons.warning,
+                  color: Colors.orange,
+                  radius: 12,
+                  width: 3,
+                  alignment: BeIconAlignment.center,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Example 3: Error Icon with Red Border
+            Container(
+              width: 100,
+              height: 100,
+              decoration: const ShapeDecoration(
+                shape: BeIconShapeBorder(
+                  icon: Icons.error,
+                  color: Colors.red,
+                  radius: 12,
+                  width: 3,
+                  alignment: BeIconAlignment.center,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: BeIconShapeBorderUseCase(),
+  ));
 }

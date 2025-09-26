@@ -21,8 +21,8 @@ Widget renderBeMultiLabelWidget(final BuildContext context) {
           position: BeMultiLabelPosition
               .values[i % BeMultiLabelPosition.values.length],
           child: Container(
-            width: 100,
-            height: 100,
+            width: 50,
+            height: 50,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: labelColors[i % labelColors.length],
@@ -43,6 +43,8 @@ Widget renderBeMultiLabelWidget(final BuildContext context) {
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Container(
+          width: 300,
+          height: 200,
           padding: const EdgeInsets.all(16),
           child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -20,8 +20,8 @@ class BeWrap extends MultiChildRenderObjectWidget {
     this.verticalDirection = VerticalDirection.down,
     this.debugGrid = false,
     this.debugGridColor = Colors.blue,
-  }) : assert(spacing != double.infinity),
-       assert(runSpacing != double.infinity);
+  })  : assert(spacing != double.infinity),
+        assert(runSpacing != double.infinity);
 
   final Axis direction;
   final WrapAlignment alignment;
@@ -50,7 +50,8 @@ class BeWrap extends MultiChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(final BuildContext context, final _RenderBeWrap renderObject) {
+  void updateRenderObject(
+      final BuildContext context, final _RenderBeWrap renderObject) {
     renderObject
       ..direction = direction
       ..alignment = alignment
@@ -67,7 +68,10 @@ class BeWrap extends MultiChildRenderObjectWidget {
 class BeWrapParentData extends ContainerBoxParentData<RenderBox> {}
 
 class _RunMetrics {
-  _RunMetrics({required this.mainAxisExtent, required this.crossAxisExtent, required this.children});
+  _RunMetrics(
+      {required this.mainAxisExtent,
+      required this.crossAxisExtent,
+      required this.children});
 
   final double mainAxisExtent;
   final double crossAxisExtent;
@@ -88,15 +92,15 @@ class _RenderBeWrap extends RenderBox
     required final VerticalDirection verticalDirection,
     required final bool debugGrid,
     required final Color debugGridColor,
-  }) : _direction = direction,
-       _alignment = alignment,
-       _spacing = spacing,
-       _runSpacing = runSpacing,
-       _padding = padding,
-       _textDirection = textDirection,
-       _verticalDirection = verticalDirection,
-       _debugGrid = debugGrid,
-       _debugGridColor = debugGridColor;
+  })  : _direction = direction,
+        _alignment = alignment,
+        _spacing = spacing,
+        _runSpacing = runSpacing,
+        _padding = padding,
+        _textDirection = textDirection,
+        _verticalDirection = verticalDirection,
+        _debugGrid = debugGrid,
+        _debugGridColor = debugGridColor;
 
   Axis _direction;
   WrapAlignment _alignment;
@@ -195,15 +199,13 @@ class _RenderBeWrap extends RenderBox
       'BeWrap needs bounded constraints in the main axis to layout.',
     );
 
-    final double maxMainExtent =
-        direction == Axis.horizontal
-            ? constraints.maxWidth - padding.horizontal
-            : constraints.maxHeight - padding.vertical;
+    final double maxMainExtent = direction == Axis.horizontal
+        ? constraints.maxWidth - padding.horizontal
+        : constraints.maxHeight - padding.vertical;
 
-    final double maxCrossExtent =
-        direction == Axis.horizontal
-            ? constraints.maxHeight - padding.vertical
-            : constraints.maxWidth - padding.horizontal;
+    final double maxCrossExtent = direction == Axis.horizontal
+        ? constraints.maxHeight - padding.vertical
+        : constraints.maxWidth - padding.horizontal;
 
     final List<_RunMetrics> runs = [];
 
@@ -217,8 +219,10 @@ class _RenderBeWrap extends RenderBox
       // Let children lay out with no max main constraint, but constrained cross axis, so they can measure their natural size
       child.layout(
         BoxConstraints(
-          maxWidth: direction == Axis.horizontal ? double.infinity : maxCrossExtent,
-          maxHeight: direction == Axis.horizontal ? maxCrossExtent : double.infinity,
+          maxWidth:
+              direction == Axis.horizontal ? double.infinity : maxCrossExtent,
+          maxHeight:
+              direction == Axis.horizontal ? maxCrossExtent : double.infinity,
           minWidth: 0,
           minHeight: 0,
         ),
@@ -226,15 +230,21 @@ class _RenderBeWrap extends RenderBox
       );
 
       final Size childSize = child.size;
-      final double childMainAxisExtent = direction == Axis.horizontal ? childSize.width : childSize.height;
-      final double childCrossAxisExtent = direction == Axis.horizontal ? childSize.height : childSize.width;
+      final double childMainAxisExtent =
+          direction == Axis.horizontal ? childSize.width : childSize.height;
+      final double childCrossAxisExtent =
+          direction == Axis.horizontal ? childSize.height : childSize.width;
 
       final double spacingToAdd = currentRunChildren.isNotEmpty ? spacing : 0.0;
       // Check if fits in current run or need new run
-      if (currentRunChildren.isNotEmpty && runMainExtent + spacingToAdd + childMainAxisExtent > maxMainExtent) {
+      if (currentRunChildren.isNotEmpty &&
+          runMainExtent + spacingToAdd + childMainAxisExtent > maxMainExtent) {
         // Save current run metrics
         runs.add(
-          _RunMetrics(mainAxisExtent: runMainExtent, crossAxisExtent: runCrossExtent, children: currentRunChildren),
+          _RunMetrics(
+              mainAxisExtent: runMainExtent,
+              crossAxisExtent: runCrossExtent,
+              children: currentRunChildren),
         );
         currentRunChildren = [];
         runMainExtent = 0.0;
@@ -248,14 +258,18 @@ class _RenderBeWrap extends RenderBox
       runMainExtent += childMainAxisExtent;
       runCrossExtent = max(runCrossExtent, childCrossAxisExtent);
 
-      final BeWrapParentData childParentData = child.parentData! as BeWrapParentData;
+      final BeWrapParentData childParentData =
+          child.parentData! as BeWrapParentData;
       child = childParentData.nextSibling;
     }
 
     // Add last run
     if (currentRunChildren.isNotEmpty) {
       runs.add(
-        _RunMetrics(mainAxisExtent: runMainExtent, crossAxisExtent: runCrossExtent, children: currentRunChildren),
+        _RunMetrics(
+            mainAxisExtent: runMainExtent,
+            crossAxisExtent: runCrossExtent,
+            children: currentRunChildren),
       );
     }
 
@@ -266,40 +280,51 @@ class _RenderBeWrap extends RenderBox
         0.0,
         (final double sum, final _RunMetrics run) => sum + run.crossAxisExtent,
       );
-      final double totalRunSpacing = runs.length > 1 ? (runs.length - 1) * runSpacing : 0.0;
+      final double totalRunSpacing =
+          runs.length > 1 ? (runs.length - 1) * runSpacing : 0.0;
       containerCrossExtent = sumRunsCrossExtent + totalRunSpacing;
     }
 
-    final double containerMainExtent =
-        direction == Axis.horizontal
-            ? constraints.maxWidth
-            : constraints.constrainWidth(
-              padding.horizontal +
-                  runs.fold<double>(0.0, (final double prev, final _RunMetrics run) => max(prev, run.mainAxisExtent)),
-            );
+    final double containerMainExtent = direction == Axis.horizontal
+        ? constraints.maxWidth
+        : constraints.constrainWidth(
+            padding.horizontal +
+                runs.fold<double>(
+                    0.0,
+                    (final double prev, final _RunMetrics run) =>
+                        max(prev, run.mainAxisExtent)),
+          );
 
-    final double containerCrossExtentConstrained =
-        direction == Axis.horizontal
-            ? constraints.constrainHeight(padding.vertical + containerCrossExtent)
-            : constraints.maxHeight;
+    final double containerCrossExtentConstrained = direction == Axis.horizontal
+        ? constraints.constrainHeight(padding.vertical + containerCrossExtent)
+        : constraints.maxHeight;
 
     size = constraints.constrain(
       Size(
-        direction == Axis.horizontal ? containerMainExtent : containerCrossExtentConstrained,
-        direction == Axis.horizontal ? containerCrossExtentConstrained : containerMainExtent,
+        direction == Axis.horizontal
+            ? containerMainExtent
+            : containerCrossExtentConstrained,
+        direction == Axis.horizontal
+            ? containerCrossExtentConstrained
+            : containerMainExtent,
       ),
     );
 
     // Position Runs
-    double crossAxisOffset = direction == Axis.horizontal ? padding.top : padding.left;
+    double crossAxisOffset =
+        direction == Axis.horizontal ? padding.top : padding.left;
 
     for (final _RunMetrics run in runs) {
-      double mainAxisOffset = direction == Axis.horizontal ? padding.left : padding.top;
+      double mainAxisOffset =
+          direction == Axis.horizontal ? padding.left : padding.top;
 
       for (final RenderBox child in run.children) {
-        final BeWrapParentData childParentData = child.parentData! as BeWrapParentData;
+        final BeWrapParentData childParentData =
+            child.parentData! as BeWrapParentData;
         childParentData.offset = Offset(mainAxisOffset, crossAxisOffset);
-        mainAxisOffset += direction == Axis.horizontal ? child.size.width + spacing : child.size.height + spacing;
+        mainAxisOffset += direction == Axis.horizontal
+            ? child.size.width + spacing
+            : child.size.height + spacing;
       }
 
       crossAxisOffset += run.crossAxisExtent + runSpacing;
@@ -316,14 +341,15 @@ class _RenderBeWrap extends RenderBox
   }
 
   void _paintDebugGrid(final PaintingContext context, final Offset offset) {
-    final Paint paint =
-        Paint()
-          ..color = debugGridColor.withValues(alpha: 0.25)
-          ..strokeWidth = 1
-          ..style = PaintingStyle.stroke;
+    final Paint paint = Paint()
+      ..color = debugGridColor.withValues(alpha: 0.25)
+      ..strokeWidth = 1
+      ..style = PaintingStyle.stroke;
 
     // vertical lines about each 50 pixels - grid overlay
-    for (double x = offset.dx + padding.left; x < offset.dx + size.width - padding.right; x += 50) {
+    for (double x = offset.dx + padding.left;
+        x < offset.dx + size.width - padding.right;
+        x += 50) {
       context.canvas.drawLine(
         Offset(x, offset.dy + padding.top),
         Offset(x, offset.dy + size.height - padding.bottom),
@@ -332,7 +358,9 @@ class _RenderBeWrap extends RenderBox
     }
 
     // horizontal lines at runs boundaries and about each 50 pixels horizontally
-    for (double y = offset.dy + padding.top; y < offset.dy + size.height - padding.bottom; y += 50) {
+    for (double y = offset.dy + padding.top;
+        y < offset.dy + size.height - padding.bottom;
+        y += 50) {
       context.canvas.drawLine(
         Offset(offset.dx + padding.left, y),
         Offset(offset.dx + size.width - padding.right, y),
@@ -342,47 +370,68 @@ class _RenderBeWrap extends RenderBox
   }
 
   @override
-  bool hitTestChildren(final BoxHitTestResult result, {required final Offset position}) {
+  bool hitTestChildren(final BoxHitTestResult result,
+      {required final Offset position}) {
     return defaultHitTestChildren(result, position: position);
   }
 
   @override
   double computeMinIntrinsicWidth(final double height) {
     if (direction == Axis.horizontal) {
-      final double totalChildWidths = _sumChildrenSizes((final child) => child.getMinIntrinsicWidth(height));
-      return padding.horizontal + totalChildWidths + max(0, childCount - 1) * spacing;
+      final double totalChildWidths = _sumChildrenSizes(
+          (final child) => child.getMinIntrinsicWidth(height));
+      return padding.horizontal +
+          totalChildWidths +
+          max(0, childCount - 1) * spacing;
     } else {
-      return padding.horizontal + _maxChildSizeMain((final child) => child.getMinIntrinsicWidth(height));
+      return padding.horizontal +
+          _maxChildSizeMain(
+              (final child) => child.getMinIntrinsicWidth(height));
     }
   }
 
   @override
   double computeMaxIntrinsicWidth(final double height) {
     if (direction == Axis.horizontal) {
-      final double totalChildWidths = _sumChildrenSizes((final child) => child.getMaxIntrinsicWidth(height));
-      return padding.horizontal + totalChildWidths + max(0, childCount - 1) * spacing;
+      final double totalChildWidths = _sumChildrenSizes(
+          (final child) => child.getMaxIntrinsicWidth(height));
+      return padding.horizontal +
+          totalChildWidths +
+          max(0, childCount - 1) * spacing;
     } else {
-      return padding.horizontal + _maxChildSizeMain((final child) => child.getMaxIntrinsicWidth(height));
+      return padding.horizontal +
+          _maxChildSizeMain(
+              (final child) => child.getMaxIntrinsicWidth(height));
     }
   }
 
   @override
   double computeMinIntrinsicHeight(final double width) {
     if (direction == Axis.vertical) {
-      final double totalChildHeights = _sumChildrenSizes((final child) => child.getMinIntrinsicHeight(width));
-      return padding.vertical + totalChildHeights + max(0, childCount - 1) * spacing;
+      final double totalChildHeights = _sumChildrenSizes(
+          (final child) => child.getMinIntrinsicHeight(width));
+      return padding.vertical +
+          totalChildHeights +
+          max(0, childCount - 1) * spacing;
     } else {
-      return padding.vertical + _maxChildSizeCross((final child) => child.getMinIntrinsicHeight(width));
+      return padding.vertical +
+          _maxChildSizeCross(
+              (final child) => child.getMinIntrinsicHeight(width));
     }
   }
 
   @override
   double computeMaxIntrinsicHeight(final double width) {
     if (direction == Axis.vertical) {
-      final double totalChildHeights = _sumChildrenSizes((final child) => child.getMaxIntrinsicHeight(width));
-      return padding.vertical + totalChildHeights + max(0, childCount - 1) * spacing;
+      final double totalChildHeights = _sumChildrenSizes(
+          (final child) => child.getMaxIntrinsicHeight(width));
+      return padding.vertical +
+          totalChildHeights +
+          max(0, childCount - 1) * spacing;
     } else {
-      return padding.vertical + _maxChildSizeCross((final child) => child.getMaxIntrinsicHeight(width));
+      return padding.vertical +
+          _maxChildSizeCross(
+              (final child) => child.getMaxIntrinsicHeight(width));
     }
   }
 
@@ -393,7 +442,8 @@ class _RenderBeWrap extends RenderBox
     var child = firstChild;
     while (child != null) {
       count++;
-      final BeWrapParentData childParentData = child.parentData! as BeWrapParentData;
+      final BeWrapParentData childParentData =
+          child.parentData! as BeWrapParentData;
       child = childParentData.nextSibling;
     }
     return count;
@@ -408,7 +458,8 @@ class _RenderBeWrap extends RenderBox
       sum += sizeGetter(child);
       first = false;
 
-      final BeWrapParentData childParentData = child.parentData! as BeWrapParentData;
+      final BeWrapParentData childParentData =
+          child.parentData! as BeWrapParentData;
       child = childParentData.nextSibling;
     }
     return sum;
@@ -419,7 +470,8 @@ class _RenderBeWrap extends RenderBox
     var child = firstChild;
     while (child != null) {
       maxSize = max(maxSize, sizeGetter(child));
-      final BeWrapParentData childParentData = child.parentData! as BeWrapParentData;
+      final BeWrapParentData childParentData =
+          child.parentData! as BeWrapParentData;
       child = childParentData.nextSibling;
     }
     return maxSize;
@@ -430,7 +482,8 @@ class _RenderBeWrap extends RenderBox
     var child = firstChild;
     while (child != null) {
       maxSize = max(maxSize, sizeGetter(child));
-      final BeWrapParentData childParentData = child.parentData! as BeWrapParentData;
+      final BeWrapParentData childParentData =
+          child.parentData! as BeWrapParentData;
       child = childParentData.nextSibling;
     }
     return maxSize;

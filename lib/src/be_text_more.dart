@@ -19,7 +19,8 @@ class Annotation {
   const Annotation({required this.regExp, required this.spanBuilder});
 
   final RegExp regExp;
-  final TextSpan Function({required String text, required TextStyle textStyle}) spanBuilder;
+  final TextSpan Function({required String text, required TextStyle textStyle})
+      spanBuilder;
 }
 
 class BeTextMore extends LeafRenderObjectWidget {
@@ -55,9 +56,9 @@ class BeTextMore extends LeafRenderObjectWidget {
     this.textWidthBasis,
     this.textHeightBehavior,
     this.selectionColor,
-  }) : richData = null,
-       richPreData = null,
-       richPostData = null;
+  })  : richData = null,
+        richPreData = null,
+        richPostData = null;
 
   const BeTextMore.rich(
     this.richData, {
@@ -88,12 +89,12 @@ class BeTextMore extends LeafRenderObjectWidget {
     this.textWidthBasis,
     this.textHeightBehavior,
     this.selectionColor,
-  }) : text = null,
-       annotations = null,
-       preDataText = null,
-       postDataText = null,
-       preDataTextStyle = null,
-       postDataTextStyle = null;
+  })  : text = null,
+        annotations = null,
+        preDataText = null,
+        postDataText = null,
+        preDataTextStyle = null,
+        postDataTextStyle = null;
 
   final ValueNotifier<bool>? isCollapsed;
 
@@ -160,44 +161,46 @@ class BeTextMore extends LeafRenderObjectWidget {
   final Color? selectionColor;
 
   @override
-  RenderObject createRenderObject(final BuildContext context) => RenderExpandableText(
-    text: text,
-    richData: richData,
-    isCollapsed: isCollapsed,
-    preDataText: preDataText,
-    postDataText: postDataText,
-    preDataTextStyle: preDataTextStyle,
-    postDataTextStyle: postDataTextStyle,
-    richPreData: richPreData,
-    richPostData: richPostData,
-    trimExpandedText: trimExpandedText,
-    trimCollapsedText: trimCollapsedText,
-    colorClickableText: colorClickableText,
-    trimLength: trimLength,
-    trimLines: trimLines,
-    trimMode: trimMode,
-    moreStyle: moreStyle,
-    lessStyle: lessStyle,
-    delimiter: delimiter,
-    delimiterStyle: delimiterStyle,
-    annotations: annotations,
-    isExpandable: isExpandable,
-    style: style,
-    strutStyle: strutStyle,
-    textAlign: textAlign,
-    textDirection: textDirection ?? Directionality.of(context),
-    locale: locale,
-    softWrap: softWrap,
-    overflow: overflow,
-    textScaler: textScaler,
-    semanticsLabel: semanticsLabel,
-    textWidthBasis: textWidthBasis,
-    textHeightBehavior: textHeightBehavior,
-    selectionColor: selectionColor,
-  );
+  RenderObject createRenderObject(final BuildContext context) =>
+      RenderExpandableText(
+        text: text,
+        richData: richData,
+        isCollapsed: isCollapsed,
+        preDataText: preDataText,
+        postDataText: postDataText,
+        preDataTextStyle: preDataTextStyle,
+        postDataTextStyle: postDataTextStyle,
+        richPreData: richPreData,
+        richPostData: richPostData,
+        trimExpandedText: trimExpandedText,
+        trimCollapsedText: trimCollapsedText,
+        colorClickableText: colorClickableText,
+        trimLength: trimLength,
+        trimLines: trimLines,
+        trimMode: trimMode,
+        moreStyle: moreStyle,
+        lessStyle: lessStyle,
+        delimiter: delimiter,
+        delimiterStyle: delimiterStyle,
+        annotations: annotations,
+        isExpandable: isExpandable,
+        style: style,
+        strutStyle: strutStyle,
+        textAlign: textAlign,
+        textDirection: textDirection ?? Directionality.of(context),
+        locale: locale,
+        softWrap: softWrap,
+        overflow: overflow,
+        textScaler: textScaler,
+        semanticsLabel: semanticsLabel,
+        textWidthBasis: textWidthBasis,
+        textHeightBehavior: textHeightBehavior,
+        selectionColor: selectionColor,
+      );
 
   @override
-  void updateRenderObject(final BuildContext context, final RenderExpandableText renderObject) {
+  void updateRenderObject(
+      final BuildContext context, final RenderExpandableText renderObject) {
     renderObject
       ..text = text
       ..richData = richData
@@ -248,7 +251,8 @@ class BeTextMore extends LeafRenderObjectWidget {
       ..add(DiagnosticsProperty<TextStyle>('lessStyle', lessStyle))
       ..add(StringProperty('trimExpandedText', trimExpandedText))
       ..add(StringProperty('trimCollapsedText', trimCollapsedText))
-      ..add(FlagProperty('isExpandable', value: isExpandable, ifFalse: 'not expandable'));
+      ..add(FlagProperty('isExpandable',
+          value: isExpandable, ifFalse: 'not expandable'));
   }
 }
 
@@ -287,39 +291,39 @@ class RenderExpandableText extends RenderBox {
     final TextWidthBasis? textWidthBasis,
     final ui.TextHeightBehavior? textHeightBehavior,
     final Color? selectionColor,
-  }) : _text = text,
-       _richData = richData,
-       _isCollapsedNotifier = isCollapsed,
-       _preDataText = preDataText,
-       _postDataText = postDataText,
-       _preDataTextStyle = preDataTextStyle,
-       _postDataTextStyle = postDataTextStyle,
-       _richPreData = richPreData,
-       _richPostData = richPostData,
-       _trimExpandedText = trimExpandedText,
-       _trimCollapsedText = trimCollapsedText,
-       _colorClickableText = colorClickableText,
-       _trimLength = trimLength,
-       _trimLines = trimLines,
-       _trimMode = trimMode,
-       _moreStyle = moreStyle,
-       _lessStyle = lessStyle,
-       _delimiter = delimiter,
-       _delimiterStyle = delimiterStyle,
-       _annotations = annotations,
-       _isExpandable = isExpandable,
-       _style = style,
-       _strutStyle = strutStyle,
-       _textAlign = textAlign,
-       _textDirection = textDirection,
-       _locale = locale,
-       _softWrap = softWrap,
-       _overflow = overflow,
-       _textScaler = textScaler,
-       _semanticsLabel = semanticsLabel,
-       _textWidthBasis = textWidthBasis,
-       _textHeightBehavior = textHeightBehavior,
-       _selectionColor = selectionColor {
+  })  : _text = text,
+        _richData = richData,
+        _isCollapsedNotifier = isCollapsed,
+        _preDataText = preDataText,
+        _postDataText = postDataText,
+        _preDataTextStyle = preDataTextStyle,
+        _postDataTextStyle = postDataTextStyle,
+        _richPreData = richPreData,
+        _richPostData = richPostData,
+        _trimExpandedText = trimExpandedText,
+        _trimCollapsedText = trimCollapsedText,
+        _colorClickableText = colorClickableText,
+        _trimLength = trimLength,
+        _trimLines = trimLines,
+        _trimMode = trimMode,
+        _moreStyle = moreStyle,
+        _lessStyle = lessStyle,
+        _delimiter = delimiter,
+        _delimiterStyle = delimiterStyle,
+        _annotations = annotations,
+        _isExpandable = isExpandable,
+        _style = style,
+        _strutStyle = strutStyle,
+        _textAlign = textAlign,
+        _textDirection = textDirection,
+        _locale = locale,
+        _softWrap = softWrap,
+        _overflow = overflow,
+        _textScaler = textScaler,
+        _semanticsLabel = semanticsLabel,
+        _textWidthBasis = textWidthBasis,
+        _textHeightBehavior = textHeightBehavior,
+        _selectionColor = selectionColor {
     _isCollapsed = _isCollapsedNotifier?.value ?? true;
     _tapRecognizer = TapGestureRecognizer()..onTap = _handleTap;
     _isCollapsedNotifier?.addListener(_onCollapsedChanged);
@@ -660,7 +664,10 @@ class RenderExpandableText extends RenderBox {
     }
 
     return RegExp(
-      annotations.map((final a) => '(${a.regExp.pattern.replaceAll(_nonCapturingGroupPattern, '(?:')})').join('|'),
+      annotations
+          .map((final a) =>
+              '(${a.regExp.pattern.replaceAll(_nonCapturingGroupPattern, '(?:')})')
+          .join('|'),
     );
   }
 
@@ -693,7 +700,8 @@ class RenderExpandableText extends RenderBox {
           }
         }
 
-        final content = matchedAnnotation.spanBuilder(text: matchedText, textStyle: textStyle);
+        final content = matchedAnnotation.spanBuilder(
+            text: matchedText, textStyle: textStyle);
 
         contents.add(content);
         return '';
@@ -721,10 +729,9 @@ class RenderExpandableText extends RenderBox {
       spanEndIndex += textLen;
 
       if (spanEndIndex >= endIndex) {
-        final newText =
-            splitByRunes
-                ? String.fromCharCodes(text.runes, 0, endIndex - spanStartIndex)
-                : text.substring(0, endIndex - spanStartIndex);
+        final newText = splitByRunes
+            ? String.fromCharCodes(text.runes, 0, endIndex - spanStartIndex)
+            : text.substring(0, endIndex - spanStartIndex);
 
         final nextSpan = TextSpan(
           text: newText,
@@ -739,7 +746,8 @@ class RenderExpandableText extends RenderBox {
           spellOut: textSpan.spellOut,
         );
 
-        return _TextSpanTrimResult(textSpan: nextSpan, spanEndIndex: spanEndIndex, didTrim: true);
+        return _TextSpanTrimResult(
+            textSpan: nextSpan, spanEndIndex: spanEndIndex, didTrim: true);
       }
     }
 
@@ -770,23 +778,23 @@ class RenderExpandableText extends RenderBox {
       }
     }
 
-    final resultTextSpan =
-        didTrim
-            ? TextSpan(
-              text: textSpan.text,
-              children: newChildren,
-              style: textSpan.style,
-              recognizer: textSpan.recognizer,
-              mouseCursor: textSpan.mouseCursor,
-              onEnter: textSpan.onEnter,
-              onExit: textSpan.onExit,
-              semanticsLabel: textSpan.semanticsLabel,
-              locale: textSpan.locale,
-              spellOut: textSpan.spellOut,
-            )
-            : textSpan;
+    final resultTextSpan = didTrim
+        ? TextSpan(
+            text: textSpan.text,
+            children: newChildren,
+            style: textSpan.style,
+            recognizer: textSpan.recognizer,
+            mouseCursor: textSpan.mouseCursor,
+            onEnter: textSpan.onEnter,
+            onExit: textSpan.onExit,
+            semanticsLabel: textSpan.semanticsLabel,
+            locale: textSpan.locale,
+            spellOut: textSpan.spellOut,
+          )
+        : textSpan;
 
-    return _TextSpanTrimResult(textSpan: resultTextSpan, spanEndIndex: spanEndIndex, didTrim: didTrim);
+    return _TextSpanTrimResult(
+        textSpan: resultTextSpan, spanEndIndex: spanEndIndex, didTrim: didTrim);
   }
 
   _TextSpanTrimResult _trimTextSpanByLines({
@@ -812,7 +820,8 @@ class RenderExpandableText extends RenderBox {
 
     if (!testPainter.didExceedMaxLines) {
       // Text fits within the maxLines, no trimming needed
-      return _TextSpanTrimResult(textSpan: textSpan, spanEndIndex: 0, didTrim: false);
+      return _TextSpanTrimResult(
+          textSpan: textSpan, spanEndIndex: 0, didTrim: false);
     }
 
     // Find the last character that fits within maxLines
@@ -829,7 +838,11 @@ class RenderExpandableText extends RenderBox {
       final testText = plainText.substring(0, mid);
 
       // Create test span with delimiter and link
-      final testSpan = TextSpan(children: [_createTextSpanFromSubstring(textSpan, testText), delimiter, link]);
+      final testSpan = TextSpan(children: [
+        _createTextSpanFromSubstring(textSpan, testText),
+        delimiter,
+        link
+      ]);
 
       final cutoffPainter = TextPainter(
         text: testSpan,
@@ -860,10 +873,12 @@ class RenderExpandableText extends RenderBox {
     final trimmedText = plainText.substring(0, bestCutoff);
     final trimmedSpan = _createTextSpanFromSubstring(textSpan, trimmedText);
 
-    return _TextSpanTrimResult(textSpan: trimmedSpan, spanEndIndex: bestCutoff, didTrim: true);
+    return _TextSpanTrimResult(
+        textSpan: trimmedSpan, spanEndIndex: bestCutoff, didTrim: true);
   }
 
-  TextSpan _createTextSpanFromSubstring(final TextSpan originalSpan, final String targetText) {
+  TextSpan _createTextSpanFromSubstring(
+      final TextSpan originalSpan, final String targetText) {
     if (originalSpan.text != null) {
       // Simple case: single text span
       return TextSpan(
@@ -898,7 +913,8 @@ class RenderExpandableText extends RenderBox {
             // Partially include child
             final remainingLength = targetText.length - processedLength;
             final trimmedChildText = childText.substring(0, remainingLength);
-            final trimmedChild = _createTextSpanFromSubstring(child, trimmedChildText);
+            final trimmedChild =
+                _createTextSpanFromSubstring(child, trimmedChildText);
             newChildren.add(trimmedChild);
             break;
           } else {
@@ -935,13 +951,17 @@ class RenderExpandableText extends RenderBox {
     if (_richPreData != null) {
       preTextSpan = _richPreData;
     } else if (_preDataText != null) {
-      preTextSpan = TextSpan(text: '${_preDataText!} ', style: _preDataTextStyle ?? effectiveStyle);
+      preTextSpan = TextSpan(
+          text: '${_preDataText!} ',
+          style: _preDataTextStyle ?? effectiveStyle);
     }
 
     if (_richPostData != null) {
       postTextSpan = _richPostData;
     } else if (_postDataText != null) {
-      postTextSpan = TextSpan(text: ' ${_postDataText!}', style: _postDataTextStyle ?? effectiveStyle);
+      postTextSpan = TextSpan(
+          text: ' ${_postDataText!}',
+          style: _postDataTextStyle ?? effectiveStyle);
     }
 
     // Build data span
@@ -961,7 +981,11 @@ class RenderExpandableText extends RenderBox {
 
     // Simple text span for now, layout will handle trimming
     _effectiveTextSpan = TextSpan(
-      children: [if (preTextSpan != null) preTextSpan, dataTextSpan, if (postTextSpan != null) postTextSpan],
+      children: [
+        if (preTextSpan != null) preTextSpan,
+        dataTextSpan,
+        if (postTextSpan != null) postTextSpan
+      ],
     );
 
     _textPainter = TextPainter(
@@ -1011,12 +1035,16 @@ class RenderExpandableText extends RenderBox {
       final linkText = _trimCollapsedText;
       final effectiveColorClickableText = _colorClickableText ?? Colors.blue;
       final effectiveStyle = _style ?? const TextStyle();
-      final defaultMoreStyle = _moreStyle ?? effectiveStyle.copyWith(color: effectiveColorClickableText);
+      final defaultMoreStyle = _moreStyle ??
+          effectiveStyle.copyWith(color: effectiveColorClickableText);
       final defaultDelimiterStyle = _delimiterStyle ?? effectiveStyle;
 
-      final link = TextSpan(text: linkText, style: defaultMoreStyle, recognizer: _tapRecognizer);
+      final link = TextSpan(
+          text: linkText, style: defaultMoreStyle, recognizer: _tapRecognizer);
 
-      final delimiter = TextSpan(text: _trimCollapsedText.isNotEmpty ? _delimiter : '', style: defaultDelimiterStyle);
+      final delimiter = TextSpan(
+          text: _trimCollapsedText.isNotEmpty ? _delimiter : '',
+          style: defaultDelimiterStyle);
 
       // Build trimmed content
       TextSpan trimmedSpan;
@@ -1029,14 +1057,13 @@ class RenderExpandableText extends RenderBox {
           splitByRunes: true,
         );
         trimmedSpan = TextSpan(
-          children:
-              [
-                _getPreSpan(),
-                trimResult.textSpan,
-                delimiter,
-                link,
-                _getPostSpan(),
-              ].where((final span) => span != null).cast<TextSpan>().toList(),
+          children: [
+            _getPreSpan(),
+            trimResult.textSpan,
+            delimiter,
+            link,
+            _getPostSpan(),
+          ].where((final span) => span != null).cast<TextSpan>().toList(),
         );
       } else {
         // For line trimming, we need to calculate based on layout
@@ -1049,14 +1076,13 @@ class RenderExpandableText extends RenderBox {
           link: link,
         );
         trimmedSpan = TextSpan(
-          children:
-              [
-                _getPreSpan(),
-                trimResult.textSpan,
-                delimiter,
-                link,
-                _getPostSpan(),
-              ].where((final span) => span != null).cast<TextSpan>().toList(),
+          children: [
+            _getPreSpan(),
+            trimResult.textSpan,
+            delimiter,
+            link,
+            _getPostSpan(),
+          ].where((final span) => span != null).cast<TextSpan>().toList(),
         );
       }
 
@@ -1076,9 +1102,13 @@ class RenderExpandableText extends RenderBox {
       final linkText = _trimExpandedText;
       final effectiveColorClickableText = _colorClickableText ?? Colors.blue;
       final effectiveStyle = _style ?? const TextStyle();
-      final defaultLessStyle = _lessStyle ?? effectiveStyle.copyWith(color: effectiveColorClickableText);
+      final defaultLessStyle = _lessStyle ??
+          effectiveStyle.copyWith(color: effectiveColorClickableText);
 
-      final link = TextSpan(text: ' $linkText', style: defaultLessStyle, recognizer: _tapRecognizer);
+      final link = TextSpan(
+          text: ' $linkText',
+          style: defaultLessStyle,
+          recognizer: _tapRecognizer);
 
       final expandedSpan = TextSpan(children: [_effectiveTextSpan, link]);
 
@@ -1116,10 +1146,12 @@ class RenderExpandableText extends RenderBox {
       final linkText = _isCollapsed ? _trimCollapsedText : _trimExpandedText;
       final linkIndex = text.indexOf(linkText);
       if (linkIndex >= 0) {
-        final linkOffset = _textPainter.getOffsetForCaret(TextPosition(offset: linkIndex), Rect.zero);
+        final linkOffset = _textPainter.getOffsetForCaret(
+            TextPosition(offset: linkIndex), Rect.zero);
         final linkWidth = _textPainter.width - linkOffset.dx;
         final linkHeight = _textPainter.preferredLineHeight;
-        _linkRect = Rect.fromLTWH(linkOffset.dx, linkOffset.dy, linkWidth, linkHeight);
+        _linkRect =
+            Rect.fromLTWH(linkOffset.dx, linkOffset.dy, linkWidth, linkHeight);
       } else {
         _linkRect = Rect.zero;
       }
@@ -1135,7 +1167,9 @@ class RenderExpandableText extends RenderBox {
       return _richPreData;
     } else if (_preDataText != null) {
       final effectiveStyle = _style ?? const TextStyle();
-      return TextSpan(text: '${_preDataText!} ', style: _preDataTextStyle ?? effectiveStyle);
+      return TextSpan(
+          text: '${_preDataText!} ',
+          style: _preDataTextStyle ?? effectiveStyle);
     }
     return null;
   }
@@ -1145,7 +1179,9 @@ class RenderExpandableText extends RenderBox {
       return _richPostData;
     } else if (_postDataText != null) {
       final effectiveStyle = _style ?? const TextStyle();
-      return TextSpan(text: ' ${_postDataText!}', style: _postDataTextStyle ?? effectiveStyle);
+      return TextSpan(
+          text: ' ${_postDataText!}',
+          style: _postDataTextStyle ?? effectiveStyle);
     }
     return null;
   }
@@ -1175,7 +1211,8 @@ class RenderExpandableText extends RenderBox {
   bool hitTestSelf(final Offset position) => true;
 
   @override
-  void handleEvent(final PointerEvent event, covariant final BoxHitTestEntry entry) {
+  void handleEvent(
+      final PointerEvent event, covariant final BoxHitTestEntry entry) {
     if (event is PointerUpEvent && _needsLink && _isExpandable) {
       final localPosition = event.localPosition;
       if (_linkRect.contains(localPosition)) {
@@ -1207,7 +1244,10 @@ class RenderExpandableText extends RenderBox {
 
 @immutable
 class _TextSpanTrimResult {
-  const _TextSpanTrimResult({required this.textSpan, required this.spanEndIndex, required this.didTrim});
+  const _TextSpanTrimResult(
+      {required this.textSpan,
+      required this.spanEndIndex,
+      required this.didTrim});
 
   final TextSpan textSpan;
   final int spanEndIndex;

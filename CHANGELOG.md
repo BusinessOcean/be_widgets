@@ -1,3 +1,7 @@
+## 1.2.2
+
+- doc update
+
 ## 1.2.1
 
 - Added demo and showcase example

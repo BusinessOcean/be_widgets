@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 ## Showcase
 
 Below are some visual showcases of the widgets in action:
@@ -18,6 +20,7 @@ Below are some visual showcases of the widgets in action:
 
 </p>
 
+>>>>>>> upstream/main
 ## Example Usage
 
 Below are example code snippets for the main widgets and utilities:
