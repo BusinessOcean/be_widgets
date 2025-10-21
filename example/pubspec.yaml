@@ -42,7 +42,7 @@ dev_dependencies:
   widgetbook_generator: ^3.16.0
   flutter_test:
     sdk: flutter
-
+  change_app_package_name: ^1.4.0
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

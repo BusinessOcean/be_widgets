@@ -1,4 +1,4 @@
-package com.example.example
+package com.business.ocean.bewidget
 
 import io.flutter.embedding.android.FlutterActivity
 
